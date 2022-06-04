@@ -4,7 +4,6 @@ const sequelize = require('../config/database')
 class User extends Model {}
 
 User.init({
-    prenom: DataTypes.STRING,
     nom: DataTypes.STRING,
     telephone: DataTypes.STRING,
     email: {
@@ -12,7 +11,6 @@ User.init({
         unique: true
     },
     mdp: DataTypes.STRING,
-    pays: DataTypes.STRING,
     ville: DataTypes.STRING,
     quartier: DataTypes.STRING,
     adresse: DataTypes.TEXT,

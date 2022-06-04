@@ -1,6 +1,6 @@
 const Sequelize = require('sequelize')
 const sequelize = require('../config/database')
-const User = require('./User')
+const Grossiste = require('./Grossiste')
 const CategorieProduit = require('./CategorieProduit')
 const Model = Sequelize.Model
 
@@ -38,8 +38,8 @@ Produit.init({
  * Un produit appartient à un et un seul utilisateur
  * A un utilisateur, peuvent appartenir zéro ou plusieurs produits
  */
-Produit.belongsTo(User)
-User.hasMany(Produit)
+Produit.belongsTo(Grossiste)
+Grossiste.hasMany(Produit)
 
 Produit.belongsTo(CategorieProduit)
 CategorieProduit.hasMany(Produit)

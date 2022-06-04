@@ -5,14 +5,13 @@ module.exports = {
     //Ajouter un partenaire
     add(req, res) {
         console.log('Partenaire controller')
-        let { nom, prenom, adresse, tel, email, typeEngin } = req.body
+        let { nom, adresse, telephone, email, engin } = req.body
         Partenaire.create({
                 nom: nom,
-                prenom: prenom,
                 adresse: adresse,
-                tel: tel,
+                telephone: telephone,
                 email: email,
-                typeEngin: typeEngin
+                engin: engin
             })
             .then((Partenaires) => {
                 res.send(Partenaires)
@@ -48,14 +47,13 @@ module.exports = {
     //Modifier un partenaire
     update(req, res) {
         let { id } = req.query
-        const { nom, prenom, adresse, tel, email, typeEngin } = req.body
+        const { nom, adresse, telephone, email, engin } = req.body
         Partenaire.update({
                 nom: nom,
-                prenom: prenom,
                 adresse: adresse,
-                tel: tel,
+                telephone: telephone,
                 email: email,
-                typeEngin: typeEngin
+                engin: engin
             }, {
                 where: {
                     id: id
@@ -76,8 +74,8 @@ module.exports = {
                     id: id
                 }
             })
-            .then((Partenaires) => {
-                res.send(Partenaires)
+            .then((partenaires) => {
+                res.send({ message: "Success" })
             }).catch((error) => {
                 res.status(404).send(error)
             });

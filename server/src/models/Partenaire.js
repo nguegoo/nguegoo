@@ -8,19 +8,16 @@ Partenaire.init({
     nom: {
         type: Sequelize.STRING
     },
-    prenom: {
-        type: Sequelize.STRING
-    },
     adresse: {
         type: Sequelize.STRING
     },
-    tel: {
-        type: Sequelize.INTEGER
+    telephone: {
+        type: Sequelize.STRING
     },
     email: {
         type: Sequelize.STRING
     },
-    typeEngin: {
+    engin: {
         type: Sequelize.STRING
     }
 }, {

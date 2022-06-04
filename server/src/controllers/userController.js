@@ -2,18 +2,22 @@ let User = require('../models/User')
 let hash = require('../policies/hash')
 const passport = require('passport')
 const jwt = require('../policies/jwtSigne')
-
+const Favorie = require('../models/Favorie')
 module.exports = {
     register(req, res) {
-        const { prenom, nom, email, mdp, typeCompte } = req.body
+        const { nom, email, mdp, typeCompte, ville, quartier, etat, adresse } = req.body
         hash.bHash(mdp)
             .then(password => {
                 User.create({
-                    prenom: prenom,
+
                     nom: nom,
                     email: email,
                     mdp: password,
-                    typeCompte: typeCompte
+                    typeCompte: typeCompte,
+                    ville: ville,
+                    quartier: quartier,
+                    etat: etat,
+                    adresse: adresse
                 }).then(result => {
                     res.send({
                         user: result,
@@ -42,9 +46,11 @@ module.exports = {
         const { user } = req.body
         User.update({
             telephone: user.telephone,
-            pays: user.pays,
+            etat: user.etat,
             ville: user.ville,
-            adresse: user.adresse
+            adresse: user.adresse,
+            quartier: quartier,
+            email: email
         }, {
             where: {
                 id: user.id
@@ -54,5 +60,19 @@ module.exports = {
         }).catch((err) => {
             res.status(400).send(err)
         })
+    },
+
+    //Ajouter une vaforie
+    addFavorie(req, res) {
+        let { GrossisteId } = req.query
+        let UserId
+        Favorie.create({
+            UserId: UserId,
+            GrossisteId: GrossisteId
+        }).then((favories) => {
+            res.send(favories)
+        }).catch((error) => {
+            res.status(404).send(error)
+        });
     }
 }

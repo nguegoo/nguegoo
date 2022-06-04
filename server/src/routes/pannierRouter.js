@@ -12,7 +12,7 @@ Router.get(
 )
 
 Router.get(
-    '/pannierById',
+    '/pannier-detail',
     PannierController.pannierById
 )
 
@@ -24,6 +24,11 @@ Router.put(
 Router.delete(
     '/delete',
     PannierController.delete
+)
+
+Router.get(
+    '/mes-commandes',
+    PannierController.clientPanier
 )
 
 module.exports = Router

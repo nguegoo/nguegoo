@@ -31,7 +31,7 @@ const Router = express.Router()
 
 //session
 app.use(session({
-        secret: 'ayeeyisecret@ciron7.dev-data&optimiser',
+        secret: 'nguegooisecret@ciron7.dev-data&optimiser',
         resave: true,
         saveUninitialized: true
     }))
@@ -97,6 +97,8 @@ app.use('/pannier', require('./routes/pannierRouter'))
 //Partenaire router
 app.use('/partenaire', require('./routes/partenaireRouter'))
 
+//Statistique router
+app.use('/statistique', require('./routes/statistiqueRouter'))
 
 sequelize.sync()
     .then(() => {

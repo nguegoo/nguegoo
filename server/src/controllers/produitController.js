@@ -2,6 +2,7 @@ var Produit = require('../models/Produit')
 let User = require('../models/User')
 var bodyParser = require('body-parser')
 var app = require("express")()
+var Grossiste = require('../models/Grossiste')
 const CategorieProduit = require('../models/CategorieProduit')
 app.use(bodyParser.json())
 app.use(bodyParser.urlencoded({ extended: false }))
@@ -12,7 +13,7 @@ module.exports = {
     add(req, res, next) {
         console.log(req.body)
         console.log(req.file)
-        let { designation, description, pvu, emballage, quantite, CategorieId } = req.body
+        let { designation, description, pvu, emballage, quantite, CategorieId, GrossisteId } = req.body
 
         // Récupérer et concatener tous les noms de fichiers images
         var files = req.files
@@ -23,8 +24,9 @@ module.exports = {
         image = image.toString()
 
         // Ajout
+        Produit.findOne({ where: {} })
         Produit.create({
-            //UserId: req.user.id,
+            GrossisteId: GrossisteId,
             designation: designation,
             description: description,
             pvu: pvu,
@@ -38,6 +40,25 @@ module.exports = {
             res.status(400).send(error)
         })
     },
+    approvisionnement(req, res) {
+        let { designation } = req.query.designation
+        let { quantite } = req.body
+        prod = Produit.findOne({ where: { designation: designation } })
+        if (prod) {
+            Produit.update({
+                quantite: quantite + prod.quantite,
+                where: {
+                    designation: designation
+                }
+            }).then((result) => {
+                res.send({ 'success': "Approvisionnement effectuer avec succè!" })
+            }).catch((error) => {
+                res.send({ 'error': "L'approvisionnement a échoué" })
+            });
+        } else {
+            console.log("Le produit n'existe pas!, veuillez l'ajouter d'abord!")
+        }
+    },
     //Information du produit par son id
     productById(req, res) {
         const { id } = req.query
@@ -45,13 +66,18 @@ module.exports = {
         Produit.findOne({
             where: {
                 id: id
-            }
+            },
+            include: [{
+                    model: Grossiste
+                },
+                {
+                    model: CategorieProduit
+                }
+            ]
         }).then(produit => {
             res.send(produit)
         }).catch(error => {
-            res.send(error => {
-                res.send({ error: error })
-            })
+            res.send("Erreur de modification : " + { error: error })
         })
     },
     // Liste
@@ -59,8 +85,12 @@ module.exports = {
 
         Produit.findAll({
                 include: [{
-                    model: CategorieProduit
-                }]
+                        model: CategorieProduit
+                    },
+                    {
+                        model: Grossiste
+                    }
+                ]
             })
             .then(produits => {
                 res.send(produits)
@@ -75,14 +105,15 @@ module.exports = {
         console.log("update")*/
         if (req.files.length == 0) {
             const { id } = req.query
-            const { designation, description, pvu, emballage, quantite, CategorieId } = req.body
+            const { designation, description, pvu, emballage, quantite, CategorieId, GrossisteId } = req.body
             Produit.update({
                 designation: designation,
                 description: description,
                 pvu: pvu,
                 quantite: quantite,
                 emballage: emballage,
-                CategorieProduitId: CategorieId
+                CategorieProduitId: CategorieId,
+                GrossisteId: GrossisteId
             }, {
                 where: { id: id }
             }).then(response => {
@@ -98,7 +129,7 @@ module.exports = {
             })
             image = image.toString()
             const { id } = req.query
-            const { designation, description, pvu, emballage, quantite, CategorieId } = req.body
+            const { designation, description, pvu, emballage, quantite, CategorieId, GrossisteId } = req.body
             Produit.update({
                 designation: designation,
                 description: description,
@@ -106,7 +137,8 @@ module.exports = {
                 pvu: pvu,
                 emballage: emballage,
                 image: image,
-                CategorieProduitId: CategorieId
+                CategorieProduitId: CategorieId,
+                GrossisteId: GrossisteId
             }, {
                 where: { id: id }
             }).then(response => {
@@ -117,7 +149,25 @@ module.exports = {
         }
     },
 
-
+    //Liste des produits par grossiste et par categorie produit
+    listeByGrossiste(req, res) {
+        let { id } = req.query
+        Produit.findAll({
+            where: {
+                GrossisteId: id
+            },
+            include: [{
+                model: Grossiste
+            }, {
+                model: CategorieProduit
+            }]
+        }).then((produits) => {
+            console.log('Liste des produit par grossite et par categorie')
+            res.send(produits)
+        }).catch((error) => {
+            res.status(404).send(error)
+        });
+    },
 
     //Supprimer un produit
     delete(req, res) {
@@ -132,6 +182,28 @@ module.exports = {
             }).catch(error => {
                 res.status(400).send(error)
             })
+    },
+
+    //Grossite par produit
+    grossisteByProduit(req, res) {
+        let idUser = req.query.id
+        Grossiste.findAll({
+
+        }, {
+            where: {
+                UserId: idUser
+            },
+            include: [{
+                    model: Produit
+                },
+                { model: CategorieProduit }
+            ]
+        }).then((grossiste) => {
+            res.send(grossiste)
+        }).catch((error) => {
+            res.status(404).send(error)
+        });
     }
+
 
 }
