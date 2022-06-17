@@ -11,5 +11,7 @@ Router.post('/register',
 
 Router.post('/login', userController.login)
 Router.put('/update', userController.updateUserInfo)
+Router.delete("/supprimer-user", userController.deleteUser)
+Router.put('/desactive-le-compte', userController.desactiveUser)
 Router.post('/favorie', userController.addFavorie)
 module.exports = Router

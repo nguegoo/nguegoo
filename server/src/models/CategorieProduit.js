@@ -10,4 +10,5 @@ CategorieProduit.init({
     modelName: 'CategorieProduit'
 })
 
+
 module.exports = CategorieProduit

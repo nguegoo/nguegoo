@@ -2,7 +2,7 @@ const Sequelize = require('sequelize')
 const sequelize = require('../config/database')
 const User = require('../models/User')
 const Grossiste = require('../models/Grossiste')
-const { hasMany, belongsTo } = require('./CategorieGrossiste')
+const { hasMany, belongsTo } = require('./SecteurActivite')
 const Model = Sequelize.Model
 
 class Favorie extends Model {}

@@ -4,21 +4,25 @@ var categorieProduitControler = require('../controllers/categorieProduitControll
 
 
 console.log('Categorie produit router')
+    //Ajouter une categorie
 Router.post(
-    '/add',
-    categorieProduitControler.add
-)
-
+        '/add',
+        categorieProduitControler.add
+    )
+    //Liste des categorie
 Router.get(
-    '/liste',
-    categorieProduitControler.liste
-)
-
+        '/liste',
+        categorieProduitControler.liste
+    )
+    //Les informations d'une categorie donné
 Router.get(
-    '/categorieProduitById',
-    categorieProduitControler.categorieProduitById
-)
-
+        '/categorieProduitById',
+        categorieProduitControler.categorieProduitById
+    )
+    //Liste des produits par categorie et par grossiste
+Router.get('/categorie-par-grossiste', categorieProduitControler.categorieProduitByGrossiste)
+    //Produit par categorie et par grossiste
+Router.get('/filtre', categorieProduitControler.ProduitByCategorieByGrossiste)
 Router.put(
     '/update',
     categorieProduitControler.update

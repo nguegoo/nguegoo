@@ -9,16 +9,19 @@ class Produit extends Model {}
 Produit.init({
 
     designation: {
-        type: Sequelize.STRING
+        type: Sequelize.STRING,
+        required: true
     },
     description: {
         type: Sequelize.TEXT
     },
     quantite: {
-        type: Sequelize.INTEGER
+        type: Sequelize.INTEGER,
+        defaultValue: 1
     },
     pvu: {
-        type: Sequelize.INTEGER
+        type: Sequelize.INTEGER,
+        required: true
     },
     image: {
         type: Sequelize.STRING

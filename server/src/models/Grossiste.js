@@ -1,27 +1,32 @@
 const Sequelize = require('sequelize')
 const sequelize = require('../config/database')
-const CategorieGrossiste =  require('../models/CategorieGrossiste')
+const CategorieGrossiste = require('./SecteurActivite')
 const User = require('../models/User')
 const Model = Sequelize.Model
 
-class Grossiste extends Model { }
+class Grossiste extends Model {}
 
-Grossiste.init(
-    {
+Grossiste.init({
         entreprise: {
-            type: Sequelize.STRING
+            type: Sequelize.STRING,
+            required: true,
+
         },
         description: {
-            type: Sequelize.STRING
+            type: Sequelize.STRING,
+            required: true
         },
         logo: {
             type: Sequelize.STRING
         },
-        
-        
+        etat: {
+            type: Sequelize.STRING,
+            defaultValue: "A",
+            max: 2
+        }
 
-    },
-    {
+
+    }, {
         sequelize,
         modelName: 'Grossiste'
     }

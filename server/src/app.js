@@ -47,15 +47,7 @@ app.use(flash())
 
 app.use(bodyParser.json())
 app.use(bodyParser.urlencoded({ extended: false }))
-    //User
-const User = require('./models/User')
-    // Produit
-const Produit = require('./models/Produit')
-const Message = require('./models/Message')
-    //imprtation du modele categorie grossiste
-const CategorieGrossiste = require('./models/CategorieGrossiste')
-    //importation du modele grossiste
-const Grossiste = require('./models/Grossiste')
+
 
 app.use(express.static(path.join(__dirname, 'public/media')))
 
@@ -73,14 +65,23 @@ app.use(bodyParser.json())
 app.use(cors({ origin: true, credentials: true, }))
     //app.use(morgan('combined'))
 
+// Configure connect-flash
+app.use(flash())
+app.use((req, res, next) => {
+    res.locals.error_message = req.flash('error_message')
+    res.locals.success_message = req.flash('success_message')
+    next()
+})
+
+
 //Routes
 
 // user router
 app.use('/user', require('./routes/userRouter'))
 
 
-// categorie grossiste router
-app.use('/categorie-grossiste', require('./routes/categorieGrossisteRouter'))
+// seteur  d'actiter router
+app.use('/secteur-activite', require('./routes/secteurActiviteRouter'))
     //grossiste router
 app.use('/grossiste', require('./routes/grossisteRouter'))
 

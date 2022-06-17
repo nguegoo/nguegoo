@@ -6,16 +6,22 @@ class Partenaire extends Model {}
 
 Partenaire.init({
     nom: {
-        type: Sequelize.STRING
+        type: Sequelize.STRING,
+        unique: true,
+        required: true
     },
     adresse: {
-        type: Sequelize.STRING
+        type: Sequelize.STRING,
+        required: true
     },
     telephone: {
-        type: Sequelize.STRING
+        type: Sequelize.STRING,
+        max: 15,
+        unique: true
     },
     email: {
-        type: Sequelize.STRING
+        type: Sequelize.STRING,
+        unique: true
     },
     engin: {
         type: Sequelize.STRING

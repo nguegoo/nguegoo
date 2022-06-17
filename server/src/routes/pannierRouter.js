@@ -1,4 +1,5 @@
 const Router = require('express').Router()
+const pannierController = require('../controllers/pannierController')
 const PannierController = require('../controllers/pannierController')
 
 Router.post(
@@ -8,7 +9,7 @@ Router.post(
 
 Router.get(
     '/liste',
-    PannierController.liste
+    PannierController.listeByGrossiste
 )
 
 Router.get(
@@ -30,5 +31,9 @@ Router.get(
     '/mes-commandes',
     PannierController.clientPanier
 )
+
+Router.get('/ma-commande', pannierController.maCommande)
+
+
 
 module.exports = Router
