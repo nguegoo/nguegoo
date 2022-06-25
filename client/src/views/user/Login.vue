@@ -37,16 +37,16 @@
                                 >
                                 </v-text-field>
                                 <v-card-text>
-                                    Don't have an account ?
+                                   Vous n'avez encore de compte  ?
                                     <router-link to="/user/registration" class="h4">
-                                        register
+                                        inscription
                                     </router-link>
                                 </v-card-text>
                                 <v-btn
                                  color="primary"
                                  @click="login"
                                 >
-                                    connect
+                                    connexion
                                 </v-btn>
                                 <v-alert
                                     border="right"
@@ -62,52 +62,6 @@
                         </v-card>
                     </v-card>
                 </v-col>
-            </v-row>
-            <v-row justify="center">
-                <v-dialog
-                    v-model="dialog"
-                    persistent
-                    max-width="350"
-                >
-                    <v-card>
-                        <v-card-title class="text-h5">
-                            Type de compte
-                        </v-card-title>
-                        <v-card-text>Je souhaite me connecter en tant que</v-card-text>
-                        <v-radio-group
-                            v-model="compte"
-                            row
-                            class="pa-3"
-                            style="margin-top: -15px;"
-                        >
-                            <v-radio
-                                label="Client acheteur"
-                                value="client"
-                            ></v-radio>
-                            <v-radio
-                                label="Client vendeur"
-                                value="vendeur"
-                            ></v-radio>
-                        </v-radio-group>
-                        <v-card-actions>
-                        <v-spacer></v-spacer>
-                        <v-btn
-                            color="green darken-1"
-                            text
-                            @click="cancelAuthentication"
-                        >
-                            Annuler
-                        </v-btn>
-                        <v-btn
-                            color="green darken-1"
-                            text
-                            @click="chooseAccessMod"
-                        >
-                            Accepter
-                        </v-btn>
-                        </v-card-actions>
-                    </v-card>
-                </v-dialog>
             </v-row>
             <v-dialog
                 v-model="dialogLoading"
@@ -139,7 +93,6 @@ import Footer from '@/components/mainComponents/Footer'
 import userServices from '@/services/userServices.js'
 export default {
   created () {
-    localStorage.setItem('token', 'no')
   },
     name: 'Login',
     components: {
@@ -175,11 +128,7 @@ export default {
             }).then(response => {
                 this.dialogLoading = false
                setTimeout(() => {
-                   if(response.data.user.typeCompte === 'Vendeur') {
-                       this.dialog = true
-                   }else {
-                       this.navigateTo(this.$store.state.route.from.path)
-                   }
+                    this.navigateTo(this.$store.state.route.from.path)
                 }, 1500)
                 localStorage.setItem('token', response.data.token)
                 localStorage.setItem('user', JSON.stringify(response.data.user))
@@ -200,20 +149,7 @@ export default {
             this.alert.show = isAlerted
             this.alert.message = text
         },
-        chooseAccessMod(){
-            if (this.compte == 'client') {
-                this.navigateTo(this.$store.state.route.from.path)
-            }else {
-                this.navigateTo('/admin/product')
-            }
-        },
-        cancelAuthentication() {
-            this.dialog = false
-            this.$store.dispatch('logOut')
-            this.configAlert('error', false, '')
-            this.email = ''
-            this.mdp = ''
-        }
+        
     }
 }
 </script>

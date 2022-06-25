@@ -5,24 +5,7 @@
     <v-container>
       <v-row justify="center">
         <v-col col="12" sm="8" md="8" lg="6">
-          <v-card flat>
-            <v-card-subtitle class="text-center">Quel type de compte voulez-vous créer ? client par défaut</v-card-subtitle>
-            <div class="d-flex justify-space-around">
-              <v-checkbox label="Client" class="mr-3 mt-2"
-                v-model="typeClient"
-                @click="chooseAccountType('Client',
-                { type1: true, clientState: true, type2: false, vendeurState: false })"
-                :disabled="clientState"
-              ></v-checkbox>
-              <v-checkbox label="Vendeur" class="mt-2"
-                v-model="typeVendeur"
-                @click="chooseAccountType('Vendeur',
-                { type1: false, clientState: false, type2: true, vendeurState: true })"
-                :disabled="vendeurState"
-              ></v-checkbox>
-            </div>
-           
-           
+          <v-card flat>   
             <v-toolbar color="primary dark" extended flat dark>
              <v-card-title>Compte</v-card-title>
               <v-spacer></v-spacer>
@@ -101,54 +84,7 @@
                     >
                       Valider
                   </v-btn>
-                  <v-dialog
-                    v-model="dialog1"
-                    width="500"
-                    persistent
-                  >
-                   
-                    <v-card>
-                      <v-card-title class="grey lighten-2">
-                        Conditions générales d'utilisation(CGU)
-                      </v-card-title>
-                      <h3 class="pa-3 text-center">{{ compteCondition.conditionTitle }}</h3>
-                      <v-card-text v-html="compteCondition.conditionText">
-                      </v-card-text>
-                      <div class="pa-3">
-                        <v-alert
-                        class="mt-2"
-                        border="right"
-                        colored-border
-                        :type="alert1.type"
-                        elevation="2"
-                        :value="alert1.isAlert"
-                        >
-                        {{ alert1.text }}
-                        </v-alert>
-                      </div>
-                      <v-divider></v-divider>
-
-                      <v-card-actions>
-                        <v-spacer></v-spacer>
-                        <v-btn
-                          color="primary"
-                          text
-                          :disabled="dialog"
-                          :loading="dialog"
-                          @click="register"
-                        >
-                          J'accepte
-                        </v-btn>
-                        <v-btn
-                          color="primary"
-                          text
-                          @click="setDialogState(false, false)"
-                        >
-                          Annuler
-                        </v-btn>
-                      </v-card-actions>
-                    </v-card>
-                  </v-dialog>
+                  
                   <v-dialog
                     v-model="dialog"
                     hide-overlay
@@ -208,33 +144,21 @@ export default {
       typeCompte: this.accountName
       }).then(response => {
         setTimeout(() => {
-         this.redirect(response.data.user.typeCompte)
-        }, 2000)
-        this.configAlert(this.alert1,'success', true, `Votre compte ${response.data.user.typeCompte} a été crée avec succès !`)
+         this.$router.push({ path: '/magasin' })
+        }, 3000)
+        this.configAlert(this.alert,'success', true, `Votre compte ${response.data.user.typeCompte} a été crée avec succès !`)
         this.dialog = false
         localStorage.setItem('user', JSON.stringify(response.data.user))
         localStorage.setItem('token', response.data.token)
-        console.log(response.data)
       }).catch(error => {
         this.configAlert(this.alert,'error', true, error.response.data.error)
-        this.setDialogState(false, false)
       })
      
     },
     navigateTo (route) {
       this.$router.push(route)
     },
-    redirect(accountType) {
-      if(accountType === 'Vendeur') {
-        this.navigateTo({ path: this.routes.vendeur })
-      }else {
-        this.navigateTo({ path: this.routes.client })
-      }
-    },
-    setDialogState(dialog, dialog1) {
-      this.dialog = dialog
-      this.dialog1 = dialog1
-    },
+  
     validUserInput() {
        this.alert.isAlert = false
        this.alert1.isAlert = false
@@ -243,25 +167,11 @@ export default {
       } else if (!this.passwordsMatch()) {
         this.configAlert(this.alert,'error', true, 'Les deux mots de passe doivent être identiques')
       }else {
-        this.dialog1 = true
+        this.register()
       }
     },
-    setComponentTitle (title) {
-      this.componentTitle = title
-      this.msg = `Création d'un compte ` + title
-    },
-    chooseAccountType (name, compte) {
-      if(name === 'Client') {
-        conditionsGenerales.setCondition('client', this.compteCondition)
-      }else {
-        conditionsGenerales.setCondition('vendeur', this.compteCondition)
-      }
-      this.typeClient = compte.type1
-      this.typeVendeur = compte.type2
-      this.vendeurState = compte.vendeurState
-      this.clientState = compte.clientState
-      this.accountName = name
-    },
+   
+    
     configAlert (alert, type, isAlerted, text) {
       alert.type = type
       alert.isAlert = isAlerted
@@ -286,12 +196,7 @@ export default {
       email: '',
       mdp: '',
       mdp1: '',
-      typeClient: true,
-      clientState: true,
-      vendeurState: false,
-      typeVendeur: false,
       accountName: 'Client',
-      accountType: `Création d'un compte client`,
       licence: false,
       compteCondition: {
         conditionTitle: '',
@@ -306,7 +211,6 @@ export default {
           name: [val => (val || '').length > 0 || 'Ce champs est requis']
       },
       dialog: false,
-      dialog1: false,
       items: [
         {
           title:  'Client'

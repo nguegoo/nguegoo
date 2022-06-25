@@ -25,7 +25,7 @@
       <v-list>
         <v-list-item-group v-model="selectedItem" color="primary">
           <v-list-item
-            @click="navigateTo('/admin/product')"
+            @click="navigateTo('/grossiste/product')"
             class="white--text"
           >
             <v-list-item-icon>
@@ -37,7 +37,7 @@
             </v-list-item-content>
           </v-list-item>
           <v-list-item
-            @click="navigateTo('/admin/vente')"
+            @click="navigateTo('/grossiste/vente')"
             class="white--text"
           >
             <v-list-item-icon>

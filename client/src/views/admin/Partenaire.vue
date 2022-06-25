@@ -3,7 +3,7 @@
     <Navbar>
         <h2 class="headline">GESTION DE</h2>
         <v-container fluid>
-            <v-data-table :headers="headers" :items="desserts" sort-by="calories" class="elevation-1" :search="search">
+            <v-data-table :headers="headers" :items="partenaires"  class="elevation-1" :search="search">
                 <template v-slot:top>
                     <v-toolbar flat>
                         <v-toolbar-title>PARTENAIRES</v-toolbar-title>
@@ -26,19 +26,19 @@
                                     <v-container>
                                         <v-row>
                                             <v-col cols="12" sm="6" md="4">
-                                                <v-text-field v-model="editedItem.name" label="Dessert name"></v-text-field>
+                                                <v-text-field v-model="editedItem.nom" label="Nom complet"></v-text-field>
                                             </v-col>
                                             <v-col cols="12" sm="6" md="4">
-                                                <v-text-field v-model="editedItem.calories" label="Calories"></v-text-field>
+                                                <v-text-field v-model="editedItem.engin" label="Engin"></v-text-field>
                                             </v-col>
                                             <v-col cols="12" sm="6" md="4">
-                                                <v-text-field v-model="editedItem.fat" label="Fat (g)"></v-text-field>
+                                                <v-text-field v-model="editedItem.adresse" label="Adresse"></v-text-field>
                                             </v-col>
                                             <v-col cols="12" sm="6" md="4">
-                                                <v-text-field v-model="editedItem.carbs" label="Carbs (g)"></v-text-field>
+                                                <v-text-field v-model="editedItem.email" label="Email"></v-text-field>
                                             </v-col>
                                             <v-col cols="12" sm="6" md="4">
-                                                <v-text-field v-model="editedItem.protein" label="Protein (g)"></v-text-field>
+                                                <v-text-field v-model="editedItem.telephone" label="Téléphone"></v-text-field>
                                             </v-col>
                                         </v-row>
                                     </v-container>
@@ -92,6 +92,8 @@
 
 <script>
 import Navbar from '@/components/global/Navbar'
+import partenaireService from '@/services/partenaireService'
+
 export default {
     name: 'Partenaire',
     components: {
@@ -101,12 +103,7 @@ export default {
         search: '',
         dialog: false,
         dialogDelete: false,
-        headers: [{
-                text: 'Prénom',
-                align: 'start',
-                sortable: false,
-                value: 'prenom',
-            },
+        headers: [
             {
                 text: 'nom',
                 value: 'nom'
@@ -130,10 +127,9 @@ export default {
             },
             { text: 'Actions', value: 'actions', sortable: false },
         ],
-        desserts: [],
+        partenaires: [],
         editedIndex: -1,
         editedItem: {
-            prenom: '',
             nom: '',
             engin: '',
             adresse: '',
@@ -141,13 +137,13 @@ export default {
             telephone: ''
         },
         defaultItem: {
-            prenom: '',
             nom: '',
             engin: '',
             adresse: '',
             email: '',
             telephone: ''
         },
+        paretenaireToDelete: null,
     }),
 
     computed: {
@@ -171,89 +167,36 @@ export default {
 
     methods: {
         initialize() {
-            this.desserts = [{
-                    prenom: 'Jean Diop',
-                    nom: 'Dio',
-                    engin: 'Voiture taxi',
-                    adresse: 'Madina',
-                    email: 'diop@gmail.com',
-                    telephone: '625678990'
-                },
-                {
-                    prenom: 'Jean Diop',
-                    nom: 'Dio',
-                    engin: 'Voiture taxi',
-                    adresse: 'Madina',
-                    email: 'diop@gmail.com',
-                    telephone: '625678990'
-                },
-                {
-                    prenom: 'Jean Diop',
-                    nom: 'Dio',
-                    engin: 'Voiture taxi',
-                    adresse: 'Madina',
-                    email: 'diop@gmail.com',
-                    telephone: '625678990'
-                },
-                {
-                    prenom: 'Jean Diop',
-                    nom: 'Dio',
-                    engin: 'Voiture taxi',
-                    adresse: 'Madina',
-                    email: 'diop@gmail.com',
-                    telephone: '625678990'
-                },
-                {
-                    prenom: 'Jean Diop',
-                    nom: 'Dio',
-                    engin: 'Voiture taxi',
-                    adresse: 'Madina',
-                    email: 'diop@gmail.com',
-                    telephone: '625678990'
-                },
-                {
-                    prenom: 'Jean Diop',
-                    nom: 'Dio',
-                    engin: 'Voiture taxi',
-                    adresse: 'Madina',
-                    email: 'diop@gmail.com',
-                    telephone: '625678990'
-                },
-                {
-                    prenom: 'Jean Diop',
-                    nom: 'Dio',
-                    engin: 'Voiture taxi',
-                    adresse: 'Madina',
-                    email: 'diop@gmail.com',
-                    telephone: '625678990'
-                },
-                {
-                    prenom: 'Jean Diop',
-                    nom: 'Dio',
-                    engin: 'Voiture taxi',
-                    adresse: 'Madina',
-                    email: 'diop@gmail.com',
-                    telephone: '625678990'
-                }
-                
-            ]
+            partenaireService.list()
+            .then((partenaires) => {
+                this.partenaires = partenaires.data
+            }).catch((err) => {
+                console.log(err)
+            });
         },
 
         editItem(item) {
-            this.editedIndex = this.desserts.indexOf(item)
+            this.editedIndex = this.partenaires.indexOf(item)
             this.editedItem = Object.assign({}, item)
             this.dialog = true
         },
 
         deleteItem(item) {
-            this.editedIndex = this.desserts.indexOf(item)
+            this.editedIndex = this.partenaires.indexOf(item)
             this.editedItem = Object.assign({}, item)
             this.dialogDelete = true
+            this.paretenaireToDelete = item.id
         },
 
         deleteItemConfirm() {
-            this.desserts.splice(this.editedIndex, 1)
-            this.closeDelete()
+            partenaireService.delete(this.paretenaireToDelete)
+            .then((result) => {
+                this.initialize()
+                this.closeDelete()
+                console.log(result)
+            }).catch((err) => {
+                console.log(err)
+            });
         },
 
         close() {
@@ -274,9 +217,23 @@ export default {
 
         save() {
             if (this.editedIndex > -1) {
-                Object.assign(this.desserts[this.editedIndex], this.editedItem)
+                partenaireService.update(this.editedItem)
+                .then((partenaire) => {
+                    this.initialize()
+                    console.log(partenaire)
+                }).catch((err) => {
+                    console.log(err)
+                })
+               
             } else {
-                this.desserts.push(this.editedItem)
+                partenaireService.add(this.editedItem)
+                .then((partenaire) => {
+                   console.log(partenaire)
+                   this.partenaires.push(partenaire.data)
+                }).catch((err) => {
+                    console.log(err)
+                });
+              
             }
             this.close()
         },

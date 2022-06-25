@@ -155,7 +155,7 @@ export default {
     refreshDataTable () {
       categorieServices.list()
       .then(response => {
-        this.categories = response.data.categories
+        this.categories = response.data
       }).catch(error => {
         console.log(error.response.data)
       })
@@ -170,7 +170,7 @@ export default {
   created() {
     categorieServices.list()
     .then(response => {
-      this.categories = response.data.categories
+      this.categories = response.data
     }).catch(error => {
       console.log(error.response.data)
     })
@@ -191,17 +191,17 @@ export default {
       items: [
         {
           text: "Dashboard",
-          disabled: true,
+          disabled: false,
         },
         {
           text: "Produits",
           disabled: false,
-          to: "/admin/product",
+          to: "/grossiste/product",
         },
         {
           text: "Catégories",
-          disabled: false,
-          to: "/admin/category",
+          disabled: true,
+          to: "/grossiste/category",
         },
         {
           text: "Commandes",

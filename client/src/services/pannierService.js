@@ -1,8 +1,12 @@
 import Api from './Api'
 export default {
     //add
-    addPanier (data) {
-        return Api().post('/pannier/addPannier', data)
+    addPanier (token, data) {
+        return Api().post('/pannier/add', data, {
+            headers: {
+                authorization: token
+            }
+        })
     },
 
     // list

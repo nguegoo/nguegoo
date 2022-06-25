@@ -1,7 +1,7 @@
 import axios from 'axios'
-
+import apiconfig from './apiconfig'
 export default () => {
     return axios.create({
-        baseURL : 'http://localhost:8081'
+        baseURL : apiconfig.back1
     })
 }

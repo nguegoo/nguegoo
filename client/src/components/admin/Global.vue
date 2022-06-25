@@ -19,8 +19,10 @@ import SideBar from './SideBar.vue'
 import Footer from '@/components/mainComponents/Footer'
 export default {
   created () {
-    if (localStorage.getItem('token') === 'no' || JSON.parse(localStorage.getItem('user')).typeCompte !== 'Vendeur') {
-      this.navigateTo('/protection.user.resources/denied')
+    const token = localStorage.getItem('token')
+    console.log(token)
+    if(token == null) {
+      this.navigateTo('/grossiste/authentication')
     }else {
       this.$store.dispatch('setToken', localStorage.getItem('token'))
       this.$store.dispatch('setUser', JSON.parse(localStorage.getItem('user')))
