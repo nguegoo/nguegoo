@@ -1,7 +1,8 @@
 const SecteurActivite = require('../models/SecteurActivite')
-
+const Grossiste = require('../models/Grossiste')
+const User = require('../models/User')
 module.exports = {
-
+    //Ajouter un secteur d'activité
     add(req, res) {
         const { designation } = req.body
         SecteurActivite.create({
@@ -13,7 +14,7 @@ module.exports = {
         })
 
     },
-
+    //Lister les secteurs d'activité
     list(req, res) {
         SecteurActivite.findAll()
             .then(result => {
@@ -23,7 +24,7 @@ module.exports = {
             })
 
     },
-
+    //Modifier un secteur d'activité
     update(req, res) {
         const idCate = req.query.id
         const designation = req.body.designation
@@ -41,7 +42,7 @@ module.exports = {
             })
 
     },
-
+    //Supprimer un secteur d'activité
     delete(req, res) {
         let idCate = req.query.id
         SecteurActivite.destroy({
@@ -53,5 +54,22 @@ module.exports = {
         }).catch(error => {
             res.status(404).send(error)
         })
-    }
+    },
+    //Liste des grossistes par secteur d'activité
+    listeByActivite(req, res) {
+        let id = req.query.id
+        SecteurActivite.findOne({
+            where: {
+                id: id
+            },
+            include: [{ model: Grossiste }]
+        }).then((result) => {
+            res.status(200).send(result)
+        }).catch((err) => {
+            res.status(500).send(err)
+        });
+    },
+    //Liste des secteurs d'activité par catégorie de produit
+
+
 }

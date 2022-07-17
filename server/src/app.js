@@ -100,7 +100,11 @@ app.use('/partenaire', require('./routes/partenaireRouter'))
 
 //Statistique router
 app.use('/statistique', require('./routes/statistiqueRouter'))
+    //Favorie router
+app.use('/favorie', require('./routes/favorieRouter'))
 
+//Livraison router
+app.use('/livraison', require('./routes/livraisonRouter'))
 sequelize.sync()
     .then(() => {
         http.listen(config.port, () => {

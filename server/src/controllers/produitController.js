@@ -3,6 +3,7 @@ let User = require('../models/User')
 var Grossiste = require('../models/Grossiste')
 const CategorieProduit = require('../models/CategorieProduit')
 const jwtSigne = require('../policies/jwtSigne')
+const Favorie = require('../models/Favorie')
 
 module.exports = {
 
@@ -32,7 +33,7 @@ module.exports = {
         }).then(response => {
             res.send(response)
         }).catch(error => {
-            res.status(400).send(error)
+            res.status(404).send(error)
         })
 
     },
@@ -161,28 +162,22 @@ module.exports = {
 
     //Liste des produits par grossiste et par categorie produit
     listeByGrossiste(req, res) {
-        const auth = req.headers.authorization
-        let user = null
-        try {
-            user = jwtSigne.verifyToken(auth)
-            Produit.findAll({
-                where: {
-                    GrossisteId: user.grossisteId
-                },
-                include: [{
-                    model: Grossiste
-                }, {
-                    model: CategorieProduit
-                }]
-            }).then((produits) => {
-                res.status(500).send({ message: 'Liste des produit par grossite et par categorie' })
-                res.send(produits)
-            }).catch((error) => {
-                res.status(404).send(error)
-            });
-        } catch (error) {
-            res.status(500).send({ message: 'Non autorisé' })
-        }
+        let id = req.query.id
+        Produit.findAll({
+            where: {
+                GrossisteId: id
+            },
+            include: [{
+                model: Grossiste
+            }, {
+                model: CategorieProduit
+            }]
+        }).then((produits) => {
+            res.send(produits)
+        }).catch((error) => {
+            res.status(404).send(error)
+        })
+
 
     },
 

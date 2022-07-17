@@ -8,14 +8,14 @@ const jwt = require('../policies/jwtSigne')
 module.exports = {
 
     addGrossiste(req, res) {
-        const { entreprise, description, idCategorie, idUser } = req.body
+        const { entreprise, description, logo, idCategorie, idUser } = req.body
             // Récupérer et concatener tous les noms de fichiers images
-        var files = req.files
-        var image = []
-        files.forEach(file => {
-            image.push(file.originalname)
-        })
-        logo = image.toString()
+            // var files = req.files
+            // var image = []
+            // files.forEach(file => {
+            //     image.push(file.originalname)
+            // })
+            // logo = image.toString()
 
         Grossiste.create({
             entreprise: entreprise,
@@ -157,6 +157,23 @@ module.exports = {
             }
 
         })(req, res, next)
+    },
+    grossisteBySecteurDactivite(req, res) {
+        const { secteurId } = req.query
+
+        Grossiste.findAll({
+            where: {
+                SecteurActiviteId: secteurId
+            },
+            include: [{
+                model: User
+            }]
+        }).then((result) => {
+            res.send(result)
+        }).catch((err) => {
+            res.status(500).send(err)
+        });
     }
+
 
 }

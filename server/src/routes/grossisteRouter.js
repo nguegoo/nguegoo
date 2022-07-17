@@ -10,5 +10,5 @@ Router.delete('/delete', GrossisteController.delete)
 Router.get('/detail-grossiste', GrossisteController.grossisteById)
 Router.get('/mes-clients', GrossisteController.grossisteByClient)
 Router.post('/login', GrossisteController.login)
-
+Router.get('/grossiste-by-secteur', GrossisteController.grossisteBySecteurDactivite)
 module.exports = Router

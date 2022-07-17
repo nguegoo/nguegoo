@@ -3,43 +3,70 @@ const Produit = require('../models/Produit');
 const User = require('../models/User')
 const Grossiste = require('../models/Grossiste');
 const jwtSigne = require('../policies/jwtSigne')
+const pannierUtility = require('../utils/pannierUtility')
 module.exports = {
 
     //Ajouter un panier
+
     add(req, res) {
         console.log('Pannier controller')
-        const { ProduitId, UserId, quantite, date } = req.body
+        const auth = req.headers.authorization
+        let user = null
+        try {
+            user = jwtSigne.verifyToken(auth)
+            const { ProduitId, quantite } = req.body
 
-        var prod = Produit.findOne({
-            where: {
-                id: ProduitId
-            }
-        })
-        if (prod.quantite > 0) {
-            if (prod.quantite >= quantite) {
-                Produit.update({
-                    quantite: prod.quantite - quantite,
-                    where: {
-                        id: ProduitId
-                    }
-                })
-                Pannier.create({
-                        ProduitId: ProduitId,
-                        UserId: UserId,
-                        quantite: quantite,
-                        date: date
-                    })
-                    .then((pannier) => {
-                        res.send(pannier)
-                    }).catch((error) => {
-                        res.status(404).send(error)
+            pannierUtility.isAlreadyAdded(Pannier, user.id, ProduitId, (err, data) => {
+                if (data == null) {
+                    Produit.findOne({
+                        where: {
+                            id: ProduitId
+                        }
+                    }).then((result) => {
+                        console.log(result.dataValues.quantite)
+                        if (result.dataValues.quantite > 0) {
+                            if (result.dataValues.quantite >= quantite) {
+                                Produit.update({
+                                    quantite: result.dataValues.quantite - quantite,
+                                }, {
+                                    where: {
+                                        id: ProduitId
+                                    }
+                                }).then((result) => {
+                                    Pannier.create({
+                                            ProduitId: ProduitId,
+                                            UserId: user.id,
+                                            quantite: quantite
+                                        })
+                                        .then((pannier) => {
+                                            res.send(pannier)
+                                        }).catch((error) => {
+                                            res.status(404).send(error)
+                                        });
+                                }).catch((err) => {
+                                    console.log(err)
+                                    res.status(404).send({ message: "Commande non effectué : " + err })
+                                });
+
+                            } else {
+                                res.status(500).send({ message: "La quantité disponible est insuffisante" })
+                            }
+                        } else {
+                            res.status(500).send({ message: "Quantité de se produit dans le stocke est nulle" })
+                        }
+
+                    }).catch((err) => {
+                        res.status(500).send({ message: "ce produit n'est pas dans le stock : " + err })
                     });
-            } else {
-                res.status(404).send({ message: "La quantité disponible est insuffisante" })
-            }
-        } else {
-            res.status(404).send({ message: "Quantité de se produit dans le stocke est nulle" })
+
+                } else {
+                    res.status(500).send({ message: "vous avez déjà commandé ce produit!" })
+                }
+            })
+        } catch (error) {
+            res.status(500).send({ message: "vous n'êtes pas connecté" })
         }
+
 
     },
     //Afficher la liste des commandes d'un grossiste
