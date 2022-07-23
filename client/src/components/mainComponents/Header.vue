@@ -35,7 +35,7 @@
                         text class="grey--text text-capitalize d-none d-md-block"
                         >
                         <v-icon class="grey--text mdi-18px">mdi-home-modern</v-icon>&nbsp;
-                        Grossistes
+                        Découvrir
                     </v-btn>
                 </template>
             <v-card>
@@ -51,15 +51,15 @@
                     >
                     <v-icon style="font-size:25px;" color="pink">mdi-home-city</v-icon>
                     <v-list-item-content class="ml-2">
-                        <v-list-item-title>Magasins</v-list-item-title>
+                        <v-list-item-title>Grossistes</v-list-item-title>
                     </v-list-item-content>
                     </v-list-item>
                     <v-list-item
                     link
-                    @click="navigateTo('/product/all-detail')"
+                    @click="navigateTo('/magasin')"
                     >
-                    <v-icon style="font-size:25px;" color="pink">mdi-view-list</v-icon>
-                    <v-list-item-title class="ml-2">Produits & catégories</v-list-item-title>
+                    <v-icon style="font-size:25px;" color="pink">mdi-account-group</v-icon>
+                    <v-list-item-title class="ml-2">Mes fournisseurs</v-list-item-title>
                     </v-list-item>
                 </v-list>
             </v-card>

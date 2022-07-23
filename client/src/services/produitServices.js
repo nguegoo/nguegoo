@@ -12,12 +12,12 @@ export default {
     },
     // List all
     list () {
-        return Api().get('/produit/list')
+        return Api().get('/produit/liste')
     },
 
     // List user's products
     userProductsList(accessToken) {
-        return Api().get('/produit/user-products-list', {
+        return Api().get('/produit/liste', {
             headers: {
                 'authorization': accessToken
             }

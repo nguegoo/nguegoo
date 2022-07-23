@@ -9,7 +9,11 @@ export default new Vuex.Store({
     state: {
         token: null,
         user: null,
-        userIsLogged: false
+        userIsLogged: false,
+        clientParams: {
+            grossisteSelected: null,
+            categorieSelected: null
+        }
     },
     mutations: {
         setToken (state, token) {
@@ -27,6 +31,9 @@ export default new Vuex.Store({
             state.token = null
             state.user = null
             state.userIsLogged = false
+        },
+        setClientParams(state, params) {
+            state.clientParams = params
         }
     },
     getters: {
@@ -38,6 +45,9 @@ export default new Vuex.Store({
         },
         getToken(state) {
             return state.token
+        },
+        getClientParams(state) {
+            return state.clientParams
         }
     },
     actions: {
@@ -49,6 +59,9 @@ export default new Vuex.Store({
         },
         logOut({commit}) {
             commit('logOut')
+        },
+        setClientParams({ commit }, params) {
+            commit('setClientParams', params)
         }
     }
 })

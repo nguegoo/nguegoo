@@ -97,7 +97,7 @@
                 ></v-avatar>
                 </p>
                 <div class="h4 text--primary text-center">
-                  {{ user.prenom + ' ' + user.nom }}
+                  {{  user.nom }}
                 </div>
                 <v-card-subheader class="text-center">{{ user.email }}</v-card-subheader>
               </v-card-text>
@@ -126,9 +126,15 @@ import Global from "@/components/admin/Global";
 
 export default {
   created () {
-    this.$store.dispatch('setUser', JSON.parse(localStorage.getItem('user')))
-    this.$store.dispatch('setToken', localStorage.getItem('token'))
-    this.user = this.$store.getters.getUser
+    const token = localStorage.getItem('token')
+    console.log(token)
+    if(token == null) {
+      this.$router.push({ path: '/grossiste/authentication' })
+    }else {
+      this.$store.dispatch('setToken', localStorage.getItem('token'))
+      this.$store.dispatch('setUser', JSON.parse(localStorage.getItem('user')))
+      this.user = JSON.parse(localStorage.getItem('user'))
+    }
   },
   data() {
     return {

@@ -4,6 +4,8 @@ import Vente from '@/views/grossiste/Vente'
 import Category from '@/views/grossiste/Category'
 import NoAccess from '@/components/admin/NoAccess'
 import Dashboard from '@/views/grossiste/Dashboard'
+import Magasin from '@/views/grossiste/Magasin'
+import Authentication from '@/views/grossiste/Authentication'
 export default {
   dashboard: {
     path: '/grossiste/dashboard',
@@ -34,5 +36,15 @@ export default {
     path: '/protection.user.resources/denied',
     name: 'NoAccess',
     component: NoAccess
+  },
+  magasin: {
+    path: '/magasin',
+    name: 'Magasin',
+    component: Magasin
+  },
+  authentication: {
+    path: '/grossiste/authentication',
+    name: 'Authentication',
+    component: Authentication
   }
 }

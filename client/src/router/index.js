@@ -37,13 +37,17 @@ const routes = [
   admin.grossiste,
   admin.commande,
   admin.partenaire,
+  admin.parametre,
+  admin.categorieGrossiste,
   // grossiste
+  grossiste.authentication,
   grossiste.dashboard,
   grossiste.product,
   grossiste.commande,
   grossiste.vente,
   grossiste.category,
   grossiste.protectResources,
+  grossiste.magasin,
 
   // Super admin
   superadmin.index,

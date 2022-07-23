@@ -7,8 +7,8 @@ export default {
       sortable: true,
       value: 'designation'
     },
-    { text: 'Categorie', value: 'SousCategorie.designation' },
-    { text: 'Prix', value: 'prix' },
+    { text: 'Categorie', value: 'CategorieProduit.designation' },
+    { text: 'Prix', value: 'pvu' },
     { text: 'Quantité', value: 'quantite' },
     { text: 'Image', value: 'image' },
     { text: 'Actions', value: 'actions' }

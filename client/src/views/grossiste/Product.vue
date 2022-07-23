@@ -50,13 +50,11 @@
                                 @change="onChange($event)"
                               ></v-autocomplete>
                             </v-col>
-                            <v-col cols="12">
+                             <v-col cols="12">
                               <v-autocomplete
-                                :items="subCategories"
-                                label="Sous-catégorie"
-                                item-text="designation"
-                                item-value="id"
-                                v-model="sousCategorieId"
+                                :items="emballages"
+                                label="Type emballage"
+                                v-model="emballage"
                               ></v-autocomplete>
                             </v-col>
                             <v-col cols="12" sm="6" md="6">
@@ -143,8 +141,8 @@
                 <v-row>
                   <v-col>
                     <v-img
-                      :lazy-src="`http://localhost:8081/produits/${item.image}`"
-                      :src="`http://localhost:8081/produits/${item.image}`"
+                      :lazy-src="`http://localhost:8081/media/produits/${item.image}`"
+                      :src="`http://localhost:8081/media/produits/${item.image}`"
                       height="50px"
                       width="40px"
                     >
@@ -280,12 +278,14 @@ export default {
     },
     addProduct () {
       const formData = new FormData()
+      const user = JSON.parse(localStorage.getItem('user'))
       formData.append('designation', this.designation)
       formData.append('description', this.description)
-      formData.append('prix', this.prixUnitaire)
+      formData.append('pvu', this.prixUnitaire)
       formData.append('quantite', this.quantite)
-      formData.append('categorieId', this.sousCategorieId)
-      
+      formData.append('CategorieId', this.categorieId)
+      formData.append('emballage', this.emballage)
+      formData.append('GrossisteId', user.grossisteId)
       this.files.forEach(f => {
         formData.append('files', f)
       })
@@ -350,6 +350,13 @@ export default {
       files: null,
       categories: [],
       subCategories: [],
+      emballages: [
+        'Sac',
+        'Carton',
+        'Sachet',
+        'Ballon',
+      ],
+      emballage: null,
       alert: {
         type: 'error',
         value: false,
@@ -359,22 +366,22 @@ export default {
         {
           text: "Dashboard",
           disabled: false,
-          to: '/admin/dashboard'
+          to: '/grossiste/dashboard'
         },
         {
           text: "Produits",
           disabled: false,
-          to: "/admin/product",
+          to: "/grossiste/product",
         },
         {
           text: "Catégories",
           disabled: false,
-          to: "/admin/category",
+          to: "/grossiste/category",
         },
         {
           text: "Commandes",
           disabled: false,
-          to: "/admin/commandes",
+          to: "/grossiste/commandes",
         },
       ],
     }
@@ -386,14 +393,14 @@ export default {
     // list des catégories
     categorieServices.list()
     .then(response => {
-      this.categories = response.data.categories
+      this.categories = response.data
     }).catch(error => {
       console.log(error.response.data)
     })
     // list des produits
     produitServices.userProductsList(this.$store.getters.getToken)
     .then(response => {
-      this.products = response.data.produits
+      this.products = response.data
     }).catch(error => {
       console.log(error.response.data)
     })
