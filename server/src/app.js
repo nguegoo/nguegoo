@@ -93,7 +93,7 @@ app.use('/categorie', require('./routes/categorieProduitRouter'))
 app.use('/produit', require('./routes/produitRouter'))
 
 //Pannier router
-app.use('/pannier', require('./routes/pannierRouter'))
+app.use('/panier', require('./routes/pannierRouter'))
 
 //Partenaire router
 app.use('/partenaire', require('./routes/partenaireRouter'))

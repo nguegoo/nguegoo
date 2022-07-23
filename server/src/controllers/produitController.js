@@ -175,7 +175,7 @@ module.exports = {
         }).then((produits) => {
             res.send(produits)
         }).catch((error) => {
-            res.status(404).send(error)
+            res.status(500).send(error)
         })
 
 
@@ -221,6 +221,22 @@ module.exports = {
             res.status(404).send({ message: "Non autorisé" })
         }
 
+    },
+
+    // Commande d'un grossiste
+    commandeGrossiste(id, callback) {
+        Produit.findAll({
+            where: {
+                GrossisteId: id
+            },
+            include: [{
+                model: Grossiste
+            }]
+        }).then((produits) => {
+            callback(null, produits)
+        }).catch((error) => {
+            callback(error, null)
+        })
     }
 
 

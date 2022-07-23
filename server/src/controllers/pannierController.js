@@ -4,6 +4,8 @@ const User = require('../models/User')
 const Grossiste = require('../models/Grossiste');
 const jwtSigne = require('../policies/jwtSigne')
 const pannierUtility = require('../utils/pannierUtility')
+const produitController = require('../controllers/produitController')
+const Sequelize = require('sequelize')
 module.exports = {
 
     //Ajouter un panier
@@ -72,34 +74,45 @@ module.exports = {
     //Afficher la liste des commandes d'un grossiste
     listeByGrossiste(req, res) {
         const auth = req.headers.authorization
-        let user = null
-        try {
-            user = jwtSigne.verifyToken(auth)
-            Pannier.findAll({
-                    attributes: [
-                        [creted_at, 'DESC']
-                    ],
-                    where: {
-                        GrossisteId: user.grossisteId
-                    },
-                    include: [{
-                            model: Produit
-                        },
-                        {
-                            model: User
-                        },
-                        {
-                            model: Grossiste
-                        }
-                    ]
+        if (auth != null) {
+            try {
+                const user = jwtSigne.verifyToken(auth)
+                produitController.commandeGrossiste(user.grossisteId, function(error, data) {
+                    let produitsId = []
+                    data.forEach(produit => {
+                        produitsId.push(produit.dataValues.id)
+                    });
+                    Pannier.findAll({
+
+                            attributes: [
+                                ['createdAt', 'DESC'], 'quantite', 'etat', 'statut', 'ProduitId', 'UserId'
+
+                            ],
+                            where: {
+                                ProduitId: {
+                                    [Sequelize.Op.in]: produitsId
+                                }
+                            },
+                            include: [
+                                { model: Produit },
+                                { model: User }
+                            ]
+                        })
+                        .then((panniers) => {
+                            //console.log(panniers);
+                            res.send(panniers)
+
+                        }).catch((error) => {
+                            console.log(error)
+                            res.status(500).send(error)
+                        })
+                    console.log(produitsId)
                 })
-                .then((panniers) => {
-                    res.send(panniers)
-                }).catch((error) => {
-                    res.status(500).send(error)
-                });
-        } catch (error) {
-            res.status(404).send({ message: "Non autorisé" })
+            } catch (error) {
+                res.status(501).send({ message: 'token invalide' })
+            }
+        } else {
+            res.status(500).send({ message: "Non autorisé" })
         }
 
     },
@@ -107,11 +120,14 @@ module.exports = {
     mesCommandes(req, res) {
         const auth = req.headers.authorization
         let user = null
+
         try {
             user = jwtSigne.verifyToken(auth)
+
+
             Pannier.findAll({
                     attributes: [
-                        [creted_at, "DESC"]
+                        ['cretedAt', "DESC"]
                     ],
                     where: {
                         UserId: user.id
@@ -121,9 +137,6 @@ module.exports = {
                         },
                         {
                             model: User
-                        },
-                        {
-                            model: Grossiste
                         }
                     ]
                 })
@@ -251,6 +264,73 @@ module.exports = {
             res.status(404).send({ message: "Non autorisé" })
         }
 
+    },
+
+    //Ligne de commande d'un client pour grossiste données
+    ligneCommandeClient(req, res) {
+        const auth = req.headers.authorization
+        const { userId } = req.query
+
+        if (auth != null) {
+            try {
+                const user = jwtSigne.verifyToken(auth)
+                produitController.commandeGrossiste(user.grossisteId, function(error, data) {
+                    let produitsId = []
+                    data.forEach(produit => {
+                        produitsId.push(produit.dataValues.id)
+                    });
+                    Pannier.findAll({
+                            attributes: [
+                                ['createdAt', 'DESC'], 'id', 'quantite', 'etat', 'statut', 'ProduitId', 'UserId'
+
+                            ],
+                            where: {
+                                ProduitId: {
+                                    [Sequelize.Op.in]: produitsId
+                                },
+                                UserId: userId
+                            },
+                            include: [
+                                { model: Produit },
+                                { model: User }
+                            ]
+                        })
+                        .then((panniers) => {
+                            res.send(panniers)
+
+                        }).catch((error) => {
+                            console.log(error)
+                            res.status(500).send(error)
+                        })
+                    console.log(produitsId)
+                })
+            } catch (error) {
+                res.status(501).send({ message: 'token invalide' })
+            }
+        } else {
+            res.status(500).send({ message: "Non autorisé" })
+        }
+
+    },
+
+    //Valider la commande
+    validerCommande(req, res) {
+        const { lignes } = req.body
+        Pannier.update({
+            statut: "T",
+
+        }, {
+            where: {
+                id: {
+                    [Sequelize.Op.in]: lignes
+                }
+            }
+        }).then((result) => {
+            res.send(result)
+        }).catch((err) => {
+            console.log(err)
+            res.status(500).send(err)
+        });
     }
 
 }

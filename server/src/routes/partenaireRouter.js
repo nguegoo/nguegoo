@@ -7,7 +7,7 @@ Router.post(
 )
 
 Router.get(
-    '/liste-des-commandes',
+    '/liste',
     partenaireController.liste
 )
 
