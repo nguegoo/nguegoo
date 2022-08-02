@@ -17,54 +17,17 @@ module.exports = {
         try {
             user = jwtSigne.verifyToken(auth)
             const { ProduitId, quantite } = req.body
+            Pannier.create({
+                    ProduitId: ProduitId,
+                    UserId: user.id,
+                    quantite: quantite
+                })
+                .then((pannier) => {
+                    res.send(pannier)
+                }).catch((error) => {
+                    res.status(404).send(error)
+                });
 
-            pannierUtility.isAlreadyAdded(Pannier, user.id, ProduitId, (err, data) => {
-                if (data == null) {
-                    Produit.findOne({
-                        where: {
-                            id: ProduitId
-                        }
-                    }).then((result) => {
-                        console.log(result.dataValues.quantite)
-                        if (result.dataValues.quantite > 0) {
-                            if (result.dataValues.quantite >= quantite) {
-                                Produit.update({
-                                    quantite: result.dataValues.quantite - quantite,
-                                }, {
-                                    where: {
-                                        id: ProduitId
-                                    }
-                                }).then((result) => {
-                                    Pannier.create({
-                                            ProduitId: ProduitId,
-                                            UserId: user.id,
-                                            quantite: quantite
-                                        })
-                                        .then((pannier) => {
-                                            res.send(pannier)
-                                        }).catch((error) => {
-                                            res.status(404).send(error)
-                                        });
-                                }).catch((err) => {
-                                    console.log(err)
-                                    res.status(404).send({ message: "Commande non effectué : " + err })
-                                });
-
-                            } else {
-                                res.status(500).send({ message: "La quantité disponible est insuffisante" })
-                            }
-                        } else {
-                            res.status(500).send({ message: "Quantité de se produit dans le stocke est nulle" })
-                        }
-
-                    }).catch((err) => {
-                        res.status(500).send({ message: "ce produit n'est pas dans le stock : " + err })
-                    });
-
-                } else {
-                    res.status(500).send({ message: "vous avez déjà commandé ce produit!" })
-                }
-            })
         } catch (error) {
             res.status(500).send({ message: "vous n'êtes pas connecté" })
         }
@@ -83,11 +46,11 @@ module.exports = {
                         produitsId.push(produit.dataValues.id)
                     });
                     Pannier.findAll({
+                            group: ['statut', 'User.nom', 'User.ville', 'User.telephone', 'User.quartier', 'User.adresse'],
+                            // attributes: [
+                            //     'statut'
 
-                            attributes: [
-                                ['createdAt', 'DESC'], 'quantite', 'etat', 'statut', 'ProduitId', 'UserId'
-
-                            ],
+                            // ],
                             where: {
                                 ProduitId: {
                                     [Sequelize.Op.in]: produitsId
@@ -266,10 +229,11 @@ module.exports = {
 
     },
 
-    //Ligne de commande d'un client pour grossiste données
+    //Ligne de commande d'un client pour un grossiste données
     ligneCommandeClient(req, res) {
         const auth = req.headers.authorization
-        const { userId } = req.query
+        const { userId, statut } = req.query
+
 
         if (auth != null) {
             try {
@@ -288,7 +252,8 @@ module.exports = {
                                 ProduitId: {
                                     [Sequelize.Op.in]: produitsId
                                 },
-                                UserId: userId
+                                UserId: userId,
+                                statut: statut
                             },
                             include: [
                                 { model: Produit },
@@ -315,18 +280,39 @@ module.exports = {
 
     //Valider la commande
     validerCommande(req, res) {
-        const { lignes } = req.body
+        const { commandes } = req.body
+        console.log(commandes);
         Pannier.update({
             statut: "T",
 
         }, {
             where: {
                 id: {
-                    [Sequelize.Op.in]: lignes
+                    [Sequelize.Op.in]: commandes.lignes
                 }
             }
         }).then((result) => {
-            res.send(result)
+            commandes.details.forEach(prod => {
+                Produit.findOne({}, {
+                    where: {
+                        id: prod.produitId
+                    }
+                }).then((prodExiste) => {
+                    Produit.update({
+                        quantite: prodExiste.dataValues.quantite - prod.quantite
+                    }, {
+                        where: {
+                            id: prod.produitId
+                        }
+                    }).then((effectuer) => {
+                        res.send(effectuer)
+                    }).catch((err) => {
+                        res.status(500).send(err)
+                    });
+                }).catch((err) => {
+
+                });
+            });
         }).catch((err) => {
             console.log(err)
             res.status(500).send(err)

@@ -105,6 +105,10 @@ app.use('/favorie', require('./routes/favorieRouter'))
 
 //Livraison router
 app.use('/livraison', require('./routes/livraisonRouter'))
+
+//L'historique des modifications des prix router
+app.use('/prixproduit', require('./routes/prixProduitRouter'))
+
 sequelize.sync()
     .then(() => {
         http.listen(config.port, () => {

@@ -2,6 +2,7 @@ const Sequelize = require('sequelize')
 const sequelize = require('../config/database')
 const Produit = require('./Produit')
 const User = require('./User')
+const PrixProduit = require('./PrixProduit')
 const Model = Sequelize.Model
 
 class Pannier extends Model {}
@@ -31,3 +32,6 @@ Produit.hasMany(Pannier)
 
 Pannier.belongsTo(User)
 User.hasMany(Pannier)
+
+PrixProduit.hasMany(Pannier)
+Pannier.belongsTo(PrixProduit)
