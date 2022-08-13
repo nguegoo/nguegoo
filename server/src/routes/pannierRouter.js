@@ -1,34 +1,42 @@
 const Router = require('express').Router()
-const PannierController = require('../controllers/pannierController')
+const pannierController = require('../controllers/pannierController')
 
 Router.post(
     '/add',
-    PannierController.add
+    pannierController.add
 )
 
 Router.get(
     '/liste',
-    PannierController.liste
+    pannierController.listeByGrossiste
 )
 
 Router.get(
     '/pannier-detail',
-    PannierController.pannierById
+    pannierController.pannierById
 )
 
 Router.put(
     '/update',
-    PannierController.update
+    pannierController.update
 )
 
 Router.delete(
     '/delete',
-    PannierController.delete
+    pannierController.delete
 )
 
 Router.get(
     '/mes-commandes',
-    PannierController.clientPanier
+    pannierController.clientPanier
 )
+
+Router.get('/ma-commande', pannierController.maCommande)
+
+//Ligne commande d'un client pour un grossiste
+Router.get('/client-ligne-commande', pannierController.ligneCommandeClient)
+
+//Valider la commande
+Router.put('/valider', pannierController.validerCommande)
 
 module.exports = Router

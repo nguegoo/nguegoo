@@ -18,7 +18,7 @@ Router.post('/approvisionnement-produit', produitController.approvisionnement)
 Router.get('/liste', produitController.liste)
 
 //Liste des produits en fonction des grossistes
-Router.get('/produit-par-grossite', produitController.listeByGrossiste)
+Router.get('/produit-par-grossiste', produitController.listeByGrossiste)
 
 //Afficher un seul produit
 Router.get(

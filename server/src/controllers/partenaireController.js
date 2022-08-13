@@ -6,18 +6,22 @@ module.exports = {
     add(req, res) {
         console.log('Partenaire controller')
         let { nom, adresse, telephone, email, engin } = req.body
-        Partenaire.create({
-                nom: nom,
-                adresse: adresse,
-                telephone: telephone,
-                email: email,
-                engin: engin
-            })
-            .then((Partenaires) => {
-                res.send(Partenaires)
-            }).catch((error) => {
-                res.status(404).send(error)
-            });
+        if (!nom || !adresse || !telephone) {
+            res.status(404).send({ message: "Tous les champs sont obligatoires" })
+        } else {
+            Partenaire.create({
+                    nom: nom,
+                    adresse: adresse,
+                    telephone: telephone,
+                    email: email,
+                    engin: engin
+                })
+                .then((Partenaires) => {
+                    res.send(Partenaires)
+                }).catch((error) => {
+                    res.status(404).send(error)
+                });
+        }
     },
     //Afficher la liste des partenaires
     liste(req, res) {
@@ -27,7 +31,7 @@ module.exports = {
             .then((Partenaires) => {
                 res.send(Partenaires)
             }).catch((error) => {
-                res.status(404).send(error)
+                res.status(500).send(error)
             });
     },
     //Recuperer les informations d'un partenaire
@@ -41,29 +45,33 @@ module.exports = {
             .then((partenaire) => {
                 res.send(partenaire)
             }).catch((error) => {
-                res.status(404).send(error)
+                res.status(500).send(error)
             });
     },
     //Modifier un partenaire
     update(req, res) {
         let { id } = req.query
         const { nom, adresse, telephone, email, engin } = req.body
-        Partenaire.update({
-                nom: nom,
-                adresse: adresse,
-                telephone: telephone,
-                email: email,
-                engin: engin
-            }, {
-                where: {
-                    id: id
-                }
-            })
-            .then((Partenaires) => {
-                res.send(Partenaires)
-            }).catch((error) => {
-                res.status(404).send(error)
-            });
+        if (!nom || !adresse || !telephone) {
+            res.status(404).send({ message: "Tous les champs sont obligatoires" })
+        } else {
+            Partenaire.update({
+                    nom: nom,
+                    adresse: adresse,
+                    telephone: telephone,
+                    email: email,
+                    engin: engin
+                }, {
+                    where: {
+                        id: id
+                    }
+                })
+                .then((Partenaires) => {
+                    res.send(Partenaires)
+                }).catch((error) => {
+                    res.status(500).send(error)
+                });
+        }
     },
 
     //Supprimer un partenaire
@@ -75,9 +83,10 @@ module.exports = {
                 }
             })
             .then((partenaires) => {
-                res.send({ message: "Success" })
+                res.status(404).send({ message: "Suppression effectué avec succè!" })
             }).catch((error) => {
-                res.status(404).send(error)
+                res.status(404).send({ message: "Suppression non effectué! " + error })
+
             });
     }
 }

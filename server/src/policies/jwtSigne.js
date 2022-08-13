@@ -1,7 +1,7 @@
 const jwt = require('jsonwebtoken')
 const config = require('../config/config')
 
-module.exports =  {
+module.exports = {
     /**
      * generate an access token
      * @param { Object } user 
@@ -13,9 +13,24 @@ module.exports =  {
             expiresIn: ONE_HOUR
         })
     },
+    verifyToken(token) {
+        const ONE_HOUR = 60 * 60
+        return jwt.verify(token, config.AuthenticationSecret.jwtSecret, {
+            expiresIn: ONE_HOUR
+        })
+    },
+    veriyTokenWithError(token, callback) {
+        const ONE_HOUR = 60 * 60
+        jwt.verify(token, config.AuthenticationSecret.jwtSecret, {
+            expiresIn: ONE_HOUR
+        }, function(err, user) {
+            console.log(user)
+            callback(err, user)
+        })
+    },
     authenticateToken(req, res, next) {
         const token = req.headers['authorization']
-        if(token == null) return res.sendStatus(401)
+        if (token == null) return res.sendStatus(401)
         jwt.verify(token, config.AuthenticationSecret.jwtSecret, (err, user) => {
             if (err) return res.sendStatus(401)
             req.user = user

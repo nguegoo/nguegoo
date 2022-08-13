@@ -24,11 +24,12 @@ module.exports = {
                         token: jwt.generateAccessToken(result.dataValues)
                     })
                 }).catch(error => {
-                    res.status(400).send({ error: `Un compte existe déjà avec cette adresse email` })
+                    res.status(404).send(error)
                 })
-            }).catch(err => {
-                res.status(400).send({ error: `Nous n'avons pas pu hasher votre mot de passe !` })
+            }).catch(error => {
+                res.status(404).send(error)
             })
+
     },
     login(req, res, next) {
         //console.log(req.body)
@@ -60,8 +61,37 @@ module.exports = {
         }).catch((err) => {
             res.status(400).send(err)
         })
+
     },
 
+    //Supprimer un user
+    deleteUser(req, res) {
+        let { id } = req.query
+        User.destroy({
+            where: {
+                id: id
+            }
+        }).then((result) => {
+            res.send(result)
+        }).catch((error) => {
+            res.status(404).send(error)
+        });
+    },
+
+    //Desactiver le compte d'un user
+    desactiveUser(req, res) {
+        let { id } = req.query
+        User.update({
+            etat: "d",
+            where: {
+                id: id
+            }
+        }).then((result) => {
+            res.send(result)
+        }).catch((error) => {
+            res.status(404).send(error)
+        });
+    },
     //Ajouter une vaforie
     addFavorie(req, res) {
         let { GrossisteId } = req.query
