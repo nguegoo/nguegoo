@@ -7,7 +7,6 @@
                     <v-img src="http://localhost:8080/images/person_1.jpg"></v-img>
                 </v-list-item-avatar>
             </v-list-item>
-
             <v-list-item link>
                 <v-list-item-content>
                     <v-list-item-title class="text-h6">

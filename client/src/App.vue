@@ -21,7 +21,7 @@ export default {
 </script>
 <style lang="css">
 #app {
-  font-family: Avenir, Helvetica, Arial, sans-serif;
+  font-family: Century Gothic;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
 }

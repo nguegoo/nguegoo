@@ -3,7 +3,7 @@
     <Navbar>
         <h2 class="headline">GESTION DE </h2>
         <v-container fluid>
-            <v-data-table :headers="headers" :items="desserts" sort-by="calories" class="elevation-1" :search="search">
+            <v-data-table :headers="headers" :items="commandes" sort-by="calories" class="elevation-1" :search="search">
                 <template v-slot:top>
                     <v-toolbar flat>
                         <v-toolbar-title>COMMANDES</v-toolbar-title>
@@ -73,7 +73,7 @@ export default {
             }
 
         ],
-        desserts: [],
+        commandes: [],
         editedIndex: -1,
         editedItem: {
             id: '',
@@ -108,54 +108,22 @@ export default {
 
     methods: {
         initialize() {
-            this.desserts = [{
-                    id: 1,
-                    produit: 'Sac de riz',
-                    client: 'Almamy oumar mansaré',
-
-                },
-                {
-                    id: 1,
-                    produit: 'Sac de riz',
-                    client: 'Almamy oumar mansaré',
-
-                },
-                {
-                    id: 1,
-                    produit: 'Sac de riz',
-                    client: 'Almamy oumar mansaré',
-
-                },
-                {
-                    id: 1,
-                    produit: 'Sac de riz',
-                    client: 'Almamy oumar mansaré',
-
-                },
-                {
-                    id: 1,
-                    produit: 'Sac de riz',
-                    client: 'Almamy oumar mansaré',
-
-                }
-
-            ]
         },
 
         editItem(item) {
-            this.editedIndex = this.desserts.indexOf(item)
+            this.editedIndex = this.commandes.indexOf(item)
             this.editedItem = Object.assign({}, item)
             this.dialog = true
         },
 
         deleteItem(item) {
-            this.editedIndex = this.desserts.indexOf(item)
+            this.editedIndex = this.commandes.indexOf(item)
             this.editedItem = Object.assign({}, item)
             this.dialogDelete = true
         },
 
         deleteItemConfirm() {
-            this.desserts.splice(this.editedIndex, 1)
+            this.commandes.splice(this.editedIndex, 1)
             this.closeDelete()
         },
 
@@ -177,9 +145,9 @@ export default {
 
         save() {
             if (this.editedIndex > -1) {
-                Object.assign(this.desserts[this.editedIndex], this.editedItem)
+                Object.assign(this.commandes[this.editedIndex], this.editedItem)
             } else {
-                this.desserts.push(this.editedItem)
+                this.commandes.push(this.editedItem)
             }
             this.close()
         },

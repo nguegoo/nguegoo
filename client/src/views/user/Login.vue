@@ -1,5 +1,5 @@
 <template>
-    <div>
+    <div class="grey lighten-4">
        <Header />
         <br><br><br>
         <v-container>
@@ -11,7 +11,7 @@
                         lg="6"
                     >
                     <v-card>
-                        <v-toolbar color="primary" extended flat>
+                        <v-toolbar color="bg-color1" extended flat>
                             <v-app-bar-nav-icon class="white--text"></v-app-bar-nav-icon>
                         </v-toolbar>
                         <v-card flat style="margin-top:-64px;">
@@ -153,3 +153,21 @@ export default {
     }
 }
 </script>
+<style scoped>
+.text-color {
+  color: #4568DC!important;
+}
+.text-color1 {
+  color: #B06AB3!important;
+}
+.bg-color1{
+  background: #B06AB3!important;
+}
+.amin-bg-color {
+ background: #4568DC;  /* fallback for old browsers */
+background: -webkit-linear-gradient(to top, #B06AB3, #4568DC);  /* Chrome 10-25, Safari 5.1-6 */
+background: linear-gradient(to top, #B06AB3, #4568DC); /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */
+
+
+}
+</style>

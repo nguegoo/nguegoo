@@ -1,12 +1,6 @@
 <template>
-  <div>
     <global>
-      <br><br>
-      <v-row>
-        <v-col cols="12" md="9" lg="10" offeset="0" offset-md="3" offset-lg="2">
-          <v-toolbar>
             <v-breadcrumbs :items="items"></v-breadcrumbs>
-          </v-toolbar>
           <v-card>
             <v-card-title>
               Catégories
@@ -43,8 +37,6 @@
               </template>
           </v-data-table>
           </v-card>
-        </v-col>
-      </v-row>
       <v-row justify="center">
       <v-dialog
         v-model="dialog"
@@ -101,7 +93,6 @@
       </v-dialog>
     </v-row>
     </global>
-  </div>
 </template>
 
 <script>
@@ -192,6 +183,7 @@ export default {
         {
           text: "Dashboard",
           disabled: false,
+          to: "/grossiste/dashboard"
         },
         {
           text: "Produits",
@@ -206,7 +198,7 @@ export default {
         {
           text: "Commandes",
           disabled: false,
-          to: "/admin/commandes",
+          to: "/grossiste/commandes",
         },
       ]
     }

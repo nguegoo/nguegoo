@@ -22,10 +22,7 @@
             </v-col>
             <v-col cols="12">
               <v-avatar>
-                <v-img
-                  src="../../../public/images/person_2.jpg"
-                >
-                </v-img>
+                <v-icon>mdi-account-group</v-icon>
               </v-avatar>
             </v-col>
             <v-col cols="12" md="6">
@@ -81,10 +78,11 @@
             <!-- Informations du vendeur -->
             <v-col cols="12">
               <v-avatar>
-                <v-img
+                <!-- <v-img
                   src="../../../public/images/person_1.jpg"
                 >
-                </v-img>
+                </v-img> -->
+                
               </v-avatar>
             </v-col>
             <v-col cols="12" md="6">
@@ -144,10 +142,11 @@
                   :key="i"
                 >
                   <v-card class="elevation-0">
-                    <v-img
+                    <!-- <v-img
                       :src="require(`../../../public/images/${c.img}`)"
                     >
-                    </v-img>
+                    </v-img> -->
+                    <v-icon>mdi-food</v-icon>
                     <v-card-text class="text-center">
                       <v-card-subtitle>{{ c.name }}</v-card-subtitle>
                       <v-card-subtitle>

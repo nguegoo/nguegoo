@@ -8,10 +8,7 @@
             <v-row justify="center">
               <v-col cols="12" md="8">
                 <v-card>
-                  <v-img
-                    src="../../../public/images/partner-1.png"
-                  >
-                  </v-img>
+                  <v-icon>mdi-account-group</v-icon>
                   <v-card-title>Partener</v-card-title>
                   <v-card-subtitle class="green--text">Role</v-card-subtitle>
                   <v-card-text>

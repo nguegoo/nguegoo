@@ -1,11 +1,11 @@
 <template>
 <div>
     <Header :productInCart="productInCart" />
-    <v-main class="indigo">
+    <v-main class="amin-bg-color">
         <br><br>
-        <h1 class="text-center white--text mt-2" style="font-size:2.1rem;">Magasins</h1>
-        <div class="d-flex justify-center">
-            <h1 style="height:10px; width:150px;" class="white mb-5"></h1>
+        <h1 class="text-center white--text mt-6" style="font-size:2.1rem;">Tous nos fournisseurs</h1>
+        <div class="d-flex justify-center mb-6">
+            <v-icon class="mdi-48px mdi-light">mdi-account-group</v-icon>
         </div>
         <v-container fluid>
             <v-toolbar dense>
@@ -17,9 +17,7 @@
             >{{ categorie.designation }}</v-btn> -->
 
                 <v-col cols="12" sm="6" class="py-2">
-                    <v-btn-toggle v-model="toggle_exclusive"
-                      color="primary"
-                    >
+                    <v-btn-toggle v-model="toggle_exclusive" color="primary">
                         <v-btn v-for="(categorie, index) in defaultCategories" :key="index" @click="grossisteParSecteur(categorie.id)">
                             {{ categorie.designation }}
                         </v-btn>
@@ -34,98 +32,98 @@
             </v-toolbar>
         </v-container>
     </v-main>
+    <div class="grey lighten-4">
 
-    <v-container>
-        <v-row>
-            <v-col cols="12" md="3" sm="6" lg="3" v-for="(f, i) in fournisseurs" :key="i">
-                <v-card class="black--text white mt-2" transition="fab-transition">
-                    <v-img :src="`http://localhost:8080/images/${f.logo}`">
-                    </v-img>
-                    <div class="grey lighten-2">
-                        <h3 v-text="f.denomination" class="text-center"></h3>
-                        <v-card-text class="black--text text-center">
-                            {{ f.entreprise }}
-                        </v-card-text>
-                        <div class="pa-6">
-                            <span>
-                                <v-icon class="indigo--text">mdi-card-account-phone</v-icon> {{ f.User.telephone }}
-                            </span>
-                            <span>
-                                <v-icon class="indigo--text">mdi-email</v-icon> {{ f.User.email }}
-                            </span>
-                            <span>
-                                <v-icon class="indigo--text">mdi-google-maps</v-icon> {{ f.User.adresse }}
-                            </span>
+        <v-container>
+            <v-row>
+                <v-col cols="12" md="3" sm="6" lg="3" v-for="(f, i) in fournisseurs" :key="i">
+                    <v-card class="black--text white mt-2" transition="fab-transition">
+                        <v-img :src="`http://localhost:8080/images/${f.logo}`">
+                        </v-img>
+                        <div class="grey lighten-2">
+                            <h3 v-text="f.denomination" class="text-center"></h3>
+                            <v-card-text class="black--text text-center">
+                                {{ f.entreprise }}
+                            </v-card-text>
+                            <div class="pa-6">
+                                <span>
+                                    <v-icon class="indigo--text">mdi-card-account-phone</v-icon> {{ f.User.telephone }}
+                                </span>
+                                <span>
+                                    <v-icon class="indigo--text">mdi-email</v-icon> {{ f.User.email }}
+                                </span>
+                                <span>
+                                    <v-icon class="indigo--text">mdi-google-maps</v-icon> {{ f.User.adresse }}
+                                </span>
+                            </div>
+                            <v-card-actions>
+                                <v-btn icon @click="addFavori(f.id)">
+                                    <v-icon>mdi-heart</v-icon>
+                                </v-btn>&nbsp;
+
+                                <v-btn icon>
+                                    <v-icon class="indigo--text">mdi-whatsapp</v-icon>
+                                </v-btn>
+                            </v-card-actions>
                         </div>
-                        <v-card-actions>
-                            <v-btn icon
-                              @click="addFavori(f.id)"
-                            >
-                                <v-icon>mdi-heart</v-icon>
-                            </v-btn>&nbsp;
-                           
-                            <v-btn icon>
-                                <v-icon class="indigo--text">mdi-whatsapp</v-icon>
-                            </v-btn>
-                        </v-card-actions>
+                    </v-card>
+                </v-col>
+                <v-col cols="12">
+                    <v-container class="max-width">
+                        <v-pagination v-model="page" class="my-4" :length="15" :total-visible="7"></v-pagination>
+                    </v-container>
+                </v-col>
+            </v-row>
+        </v-container>
+        <v-container>
+            <v-row>
+                <v-col cols="12">
+                    <div class="d-flex justify-center">
+                        <v-card-title class="font-weight-thin text-center">Ajout de favoris</v-card-title>
                     </div>
-                </v-card>
-            </v-col>
-            <v-col cols="12">
-                <v-container class="max-width">
-                    <v-pagination v-model="page" class="my-4" :length="15" :total-visible="7"></v-pagination>
-                </v-container>
-            </v-col>
-        </v-row>
-    </v-container>
-    <v-container>
-        <v-row>
-            <v-col cols="12">
-                <div class="d-flex justify-center">
-                    <v-card-title class="font-weight-thin text-center">Ajout de favoris</v-card-title>
-                </div>
-                <div class="d-flex justify-center">
-                    <v-icon class="grey--text mdi-48px">mdi-heart</v-icon>
-                </div>
-                <p style="font-size: 20px;">
-                    Vous pouvez ajouter un fournisseur à vos favoris pour le retrouver
-                    directememt dans la liste de vos fournisseurs grossistes. <br>
-                    Ceci, vous permet de faciliter la recherche et accélérer les
-                    services sur la plateforme.
-                </p>
-            </v-col>
+                    <div class="d-flex justify-center">
+                        <v-icon class="text-color1 mdi-48px">mdi-heart</v-icon>
+                    </div>
+                    <p style="font-size: 20px;">
+                        Vous pouvez ajouter un fournisseur à vos favoris pour le retrouver
+                        directememt dans la liste de vos fournisseurs grossistes. <br>
+                        Ceci, vous permet de faciliter la recherche et accélérer les
+                        services sur la plateforme.
+                    </p>
+                </v-col>
 
-        </v-row>
-    </v-container>
-    <div class="text-center ma-2">
-        <v-snackbar v-model="snackbar">
-            {{ snackbarText }}
+            </v-row>
+        </v-container>
+        <div class="text-center ma-2">
+            <v-snackbar v-model="snackbar">
+                {{ snackbarText }}
 
-            <template v-slot:action="{ attrs }">
-                <v-btn color="pink" text v-bind="attrs" @click="snackbar = false">
-                    Close
-                </v-btn>
-            </template>
-        </v-snackbar>
-    </div>
-    <v-row justify="center">
-        <v-dialog v-model="dialog" persistent max-width="290">
-            <v-card>
-                <v-card-title class="headline">
-                    Information
-                </v-card-title>
-                <v-card-text>
-                  {{ alertMessage }}
-                </v-card-text>
-                <v-card-actions>
-                    <v-spacer></v-spacer>
-                    <v-btn color="pink darken-1" text @click="dialog = false">
-                        Fermer
+                <template v-slot:action="{ attrs }">
+                    <v-btn color="pink" text v-bind="attrs" @click="snackbar = false">
+                        Close
                     </v-btn>
-                </v-card-actions>
-            </v-card>
-        </v-dialog>
-    </v-row>
+                </template>
+            </v-snackbar>
+        </div>
+        <v-row justify="center">
+            <v-dialog v-model="dialog" persistent max-width="290">
+                <v-card>
+                    <v-card-title class="headline">
+                        Information
+                    </v-card-title>
+                    <v-card-text>
+                        {{ alertMessage }}
+                    </v-card-text>
+                    <v-card-actions>
+                        <v-spacer></v-spacer>
+                        <v-btn color="pink darken-1" text @click="dialog = false">
+                            Fermer
+                        </v-btn>
+                    </v-card-actions>
+                </v-card>
+            </v-dialog>
+        </v-row>
+    </div>
 </div>
 </template>
 
@@ -263,22 +261,24 @@ export default {
                 });
         },
         addFavori(grossisteId) {
-          const token = localStorage.getItem('token')
-          if(token == null)  {
-            alert("Vous devez d'abord vous authentifer")
-          }else {
-            favoriService.add(token, { GrossisteId : grossisteId })
-            .then((result) => {
-              this.alertMessage = "Ajouté dans vos favoris avec succès !"
-              this.dialog = true
-              console.log(result)
-            }).catch((err) => {
-              this.alertMessage = err.response.data.message
-              console.log(this.alertMessage)
-              this.dialog = true
-              
-            });
-          }
+            const token = localStorage.getItem('token')
+            if (token == null) {
+                alert("Vous devez d'abord vous authentifer")
+            } else {
+                favoriService.add(token, {
+                        GrossisteId: grossisteId
+                    })
+                    .then((result) => {
+                        this.alertMessage = "Ajouté dans vos favoris avec succès !"
+                        this.dialog = true
+                        console.log(result)
+                    }).catch((err) => {
+                        this.alertMessage = err.response.data.message
+                        console.log(this.alertMessage)
+                        this.dialog = true
+
+                    });
+            }
         }
     },
     data() {
@@ -309,4 +309,26 @@ export default {
 }
 </script>
 
-<style scoped></style>
+<style scoped>
+.text-color {
+    color: #4568DC !important;
+}
+
+.text-color1 {
+    color: #B06AB3 !important;
+}
+
+.bg-color1 {
+    background: #B06AB3 !important;
+}
+
+.amin-bg-color {
+    background: #4568DC;
+    /* fallback for old browsers */
+    background: -webkit-linear-gradient(to top, #B06AB3, #4568DC);
+    /* Chrome 10-25, Safari 5.1-6 */
+    background: linear-gradient(to top, #B06AB3, #4568DC);
+    /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */
+
+}
+</style>

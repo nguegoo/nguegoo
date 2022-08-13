@@ -3,12 +3,11 @@
     <v-navigation-drawer
       permanent
       left
-      fixed
       disabled-resize-watcher
-      style="top:8.5%;"
       class="d-none d-sm-none d-md-block d-lg-block"
       width="230px"
       color="indigo"
+      app
     >
       <template v-slot:prepend>
         <v-list-item two-line>

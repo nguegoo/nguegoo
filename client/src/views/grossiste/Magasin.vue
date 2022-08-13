@@ -1,70 +1,76 @@
 <template>
-<NavbarComponent v-on:init-setting-grossiste="getGrossiste"
-    v-on:init-setting-categorie="getCategorie"
->
-    <v-container fluid>
-        <div class="row">
-            <v-col cols="12" md="4" lg="3" v-for="(produit, index) in produits" :key="index">
-                <v-card class="mx-auto" max-width="400">
-                    <v-img class="white--text align-end" height="200px" :src="`http://192.168.43.246:8081/produits/${produit.image}`" :lazy-src="`http://192.168.43.253:8081/produits/${produit.image}`">
-                    </v-img>
-                    <v-card-subtitle class="pb-0">
-                        {{ produit.designation }}
-                    </v-card-subtitle>
-                    <v-card-text class="text--primary">
-                        <div>Quantite disponible: <span>{{produit.quantite}}</span></div>
-                        <div><strong>Prix</strong>: <span>{{produit.pvu}} GNF</span></div>
-                    </v-card-text>
-                    <v-card-actions>
-                        <v-btn color="orange" text @click="commander(produit)">
-                            <v-icon>mdi-cart</v-icon>
-                            Commander
-                        </v-btn>
-                    </v-card-actions>
-                </v-card>
-            </v-col>
-        </div>
-        <div class="text-center">
-            <v-dialog v-model="dialog" width="500" persistent>
+<NavbarComponent v-on:init-setting-grossiste="getGrossiste" v-on:init-setting-categorie="getCategorie">
+    <div class="grey lighten-4"
+    style="position: relative!important; height: 100%;">
 
-                <v-card class="elevation-5">
-                    <div class="d-flex justify-space-between pa-2">
-                        <h3 class="primary--text">Paramètres de commande</h3>
-                        <v-icon class="mdi-24px">mdi-cart-variant</v-icon>
-                    </div>
-                    <v-divider></v-divider>
-                    <div class="pa-3">
-                        <div class="mb-1">
-                            <strong>{{ commande.designation }}</strong>&nbsp;&nbsp;
-                        </div>
-                        <div class="mb-1">
-                            <strong>Quantite disponible: &nbsp;&nbsp;{{ commande.quantite }}</strong>&nbsp;&nbsp;
-                        </div>
-                        <div class="mb-1">
-                            <strong>Prix unitaire: &nbsp;&nbsp;{{ commande.prix }} GNF</strong>&nbsp;&nbsp;
-                        </div>
-                        <div class="mb-1">
-                            <p>Prix total: &nbsp;&nbsp;<span>{{ commande.pt }} GNF</span></p>
-                        </div>
-                        <v-text-field label="Quelle quantite voulez - vous ?" v-model="quantite" type="number">
+        <v-container fluid>
+            <div class="row">
+                <v-col cols="12" md="4" lg="3" v-for="(produit, index) in produits" :key="index">
+                    <v-card class="mx-auto" max-width="400">
+                        <v-img class="white--text align-end" height="200px" :src="`http://192.168.43.246:8081/produits/${produit.image}`" :lazy-src="`http://192.168.43.253:8081/produits/${produit.image}`">
+                        </v-img>
+                        <v-card-subtitle class="pb-0">
+                            {{ produit.designation }}
+                        </v-card-subtitle>
+                        <v-card-text class="text--primary">
+                            <div><strong>Prix</strong>: <span>{{produit.PrixProduits[0].prix}} GNF</span></div>
+                        </v-card-text>
+                        <v-card-actions>
+                            <v-btn color="orange" text @click="commander(produit)">
+                                <v-icon>mdi-cart</v-icon>
+                                Commander
+                            </v-btn>
+                        </v-card-actions>
+                    </v-card>
+                </v-col>
+            </div>
+            <div class="text-center">
+                <v-dialog v-model="dialog" width="500" persistent>
 
-                        </v-text-field>
-                    </div>
-                    <v-divider></v-divider>
+                    <v-card class="elevation-5">
+                        <div class="d-flex justify-space-between pa-2">
+                            <h3 class="primary--text">Paramètres de commande</h3>
+                            <v-icon class="mdi-24px">mdi-cart-variant</v-icon>
+                        </div>
+                        <v-divider></v-divider>
+                        <div class="pa-3">
+                            <div class="mb-1">
+                                <strong>{{ commande.designation }}</strong>&nbsp;&nbsp;
+                            </div>
+                            <div class="mb-1">
+                                <strong>Prix unitaire: &nbsp;&nbsp;{{ commande.prix }} GNF</strong>&nbsp;&nbsp;
+                            </div>
+                            <div class="mb-1">
+                                <p>Prix total: &nbsp;&nbsp;<span>{{ commande.pt }} GNF</span></p>
+                            </div>
+                            <v-text-field label="Quelle quantite voulez - vous ?" v-model="quantite" type="number">
 
-                    <v-card-actions>
-                        <v-spacer></v-spacer>
-                        <v-btn color="primary" text @click="validerCommande">
-                            Valider
-                        </v-btn>
-                        <v-btn color="pink" text @click="dialog = false">
-                            Annuler
-                        </v-btn>
-                    </v-card-actions>
-                </v-card>
-            </v-dialog>
-        </div>
-    </v-container>
+                            </v-text-field>
+                        </div>
+                        <v-divider></v-divider>
+
+                        <v-card-actions>
+                            <v-spacer></v-spacer>
+                            <v-btn color="primary" text @click="validerCommande">
+                                Valider
+                            </v-btn>
+                            <v-btn color="pink" text @click="dialog = false">
+                                Annuler
+                            </v-btn>
+                        </v-card-actions>
+                    </v-card>
+                </v-dialog>
+            </div>
+        </v-container>
+        <SimpleDialog 
+        :simpleDialog="simpleDialog"
+        :title="simpleDialogTitle"
+        v-on:hide-dialog="hide">
+        <v-card-text>
+            {{ simpleDialogMessage }}
+        </v-card-text>
+        </SimpleDialog>
+    </div>
 </NavbarComponent>
 </template>
 
@@ -72,29 +78,36 @@
 import grossisteService from "@/services/grossisteService"
 import NavbarComponent from '@/components/user/NavbarComponent'
 import pannierService from '@/services/pannierService'
+import SimpleDialog from '@/components/utils/Dialog/SimpleDialog'
+
 export default {
     name: "Magasin",
     components: {
-        NavbarComponent
+        NavbarComponent,
+        SimpleDialog
     },
     watch: {
         quantite(value) {
-           
-            if(isNaN(value)) {
-               this.commande.pt = 0
-            }else {
-                if(value == '') {
+
+            if (isNaN(value)) {
+                this.commande.pt = 0
+            } else {
+                if (value == '') {
                     this.commande.pt = 0
-                }else {
+                } else {
                     this.commande.pt += parseInt(value) * this.commande.prix
                 }
-               
+
             }
 
         }
     },
     data() {
         return {
+            // variables simpleDialog
+            simpleDialog: false,
+            simpleDialogTitle: 'Information',
+            simpleDialogMessage: '',
             dialog: false,
             quantite: 1,
             items: [{
@@ -153,14 +166,17 @@ export default {
                 });
 
         },
+        hide() {
+            this.simpleDialog = false
+        },
         getCategorie(categorie) {
             this.categorieSelected = categorie.id
             grossisteService.listeProduitParGrossisteDuneCategorie(this.grossisteSelected, this.categorieSelected)
-            .then((produits) => {
-                this.produits = produits.data
-            }).catch((err) => {
-                console.log(err)
-            });
+                .then((produits) => {
+                    this.produits = produits.data
+                }).catch((err) => {
+                    console.log(err)
+                });
         },
         initialize() {
             grossisteService
@@ -173,6 +189,7 @@ export default {
                     grossisteService.listeProduitByGrossiste(this.defaultGrossiste.id)
                         .then((res) => {
                             this.produits = res.data
+                            console.log(this.produits)
                         }).catch((err) => {
                             console.log(err)
                         });
@@ -185,7 +202,7 @@ export default {
             this.commande.produitId = produit.id
             this.commande.designation = produit.designation
             this.commande.quantite = produit.quantite
-            this.commande.prix = produit.pvu
+            this.commande.prix = produit.PrixProduits[0].prix
             this.commande.pt = this.quantite * this.commande.prix
             this.dialog = true
         },
@@ -195,6 +212,9 @@ export default {
                 ProduitId: this.commande.produitId,
                 quantite: this.quantite
             }).then((result) => {
+                this.simpleDialog = true
+                this.simpleDialogMessage = "Commande effectuée avec succès !"
+                this.dialog = false
                 console.log(result)
             }).catch((err) => {
                 console.log(err)
