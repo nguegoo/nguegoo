@@ -137,7 +137,7 @@ module.exports = {
                     res.status(500).send({ "message": "Le prix n'est pas ajouté erreur :" + err })
                 });
             }).catch(error => {
-                res.status(500).send({ "message": "Erreur de modification : " + error })
+                res.status(500).send({ "message": "Erreur de modification du produit : " + error })
             })
         } else {
             var files = req.files
