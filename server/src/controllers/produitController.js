@@ -4,7 +4,7 @@ var Grossiste = require('../models/Grossiste')
 const CategorieProduit = require('../models/CategorieProduit')
 const jwtSigne = require('../policies/jwtSigne')
 const Favorie = require('../models/Favorie')
-
+const PrixProduit = require('../models/PrixProduit')
 module.exports = {
 
     // Ajout
@@ -25,15 +25,21 @@ module.exports = {
             GrossisteId: GrossisteId,
             designation: designation,
             description: description,
-            pvu: pvu,
             quantite: quantite,
             emballage: emballage,
             image: image,
             CategorieProduitId: CategorieId
         }).then(response => {
-            res.send(response)
+            PrixProduit.create({
+                prix: pvu,
+                ProduitId: response.id
+            }).then((result) => {
+                res.status(200).send(result)
+            }).catch((err) => {
+                res.status(500).send(err)
+            });
         }).catch(error => {
-            res.status(404).send(error)
+            res.status(500).send(error)
         })
 
     },
@@ -50,10 +56,10 @@ module.exports = {
             }).then((result) => {
                 res.status(200).send({ success: "Approvisionnement effectuer avec succè!" })
             }).catch((error) => {
-                res.status(404).send({ error: "L'approvisionnement a échoué" })
+                res.status(500).send({ error: "L'approvisionnement a échoué" })
             });
         } else {
-            res.status(404).send("Le produit n'existe pas!, veuillez l'ajouter d'abord!")
+            res.status(500).send("Le produit n'existe pas!, veuillez l'ajouter d'abord!")
         }
     },
     //Information du produit par son id
@@ -74,7 +80,7 @@ module.exports = {
         }).then(produit => {
             res.send(produit)
         }).catch(error => {
-            res.status(404).send({ message: "Erreur d'affichage : " + error })
+            res.status(500).send({ message: "Erreur d'affichage : " + error })
         })
     },
     // Liste
@@ -92,7 +98,8 @@ module.exports = {
                         },
                         {
                             model: Grossiste
-                        }
+                        },
+                        { model: PrixProduit }
                     ]
                 })
                 .then(produits => {
@@ -107,57 +114,66 @@ module.exports = {
     },
 
     update(req, res, next) {
-        /*console.log(req.body)
-        console.log(req.files)
-        console.log("update")*/
-        if (!designation || !pvu) {
-            res.status(404).send({ message: "Tous les champs sont obligatoires" })
+
+        if (req.files.length == 0) {
+
+            const { id, designation, description, pvu, emballage, quantite, CategorieId, GrossisteId } = req.body
+            Produit.update({
+                designation: designation,
+                description: description,
+                quantite: quantite,
+                emballage: emballage,
+                CategorieProduitId: CategorieId,
+                GrossisteId: GrossisteId
+            }, {
+                where: { id: id }
+            }).then(response => {
+                PrixProduit.create({
+                    prix: pvu,
+                    ProduitId: id
+                }).then((result) => {
+                    res.status(200).send(result)
+                }).catch((err) => {
+                    res.status(500).send({ "message": "Le prix n'est pas ajouté erreur :" + err })
+                });
+            }).catch(error => {
+                res.status(500).send({ "message": "Erreur de modification : " + error })
+            })
         } else {
-            if (req.files.length == 0) {
-                const { id } = req.query
-                const { designation, description, pvu, emballage, quantite, CategorieId, GrossisteId } = req.body
-                Produit.update({
-                    designation: designation,
-                    description: description,
-                    pvu: pvu,
-                    quantite: quantite,
-                    emballage: emballage,
-                    CategorieProduitId: CategorieId,
-                    GrossisteId: GrossisteId
-                }, {
-                    where: { id: id }
-                }).then(response => {
-                    res.send(response)
-                }).catch(error => {
-                    res.status(400).send(error)
-                })
-            } else {
-                var files = req.files
-                var image = []
-                files.forEach(file => {
-                    image.push(file.originalname)
-                })
-                image = image.toString()
-                const { id } = req.query
-                const { designation, description, pvu, emballage, quantite, CategorieId, GrossisteId } = req.body
-                Produit.update({
-                    designation: designation,
-                    description: description,
-                    quantite: quantite,
-                    pvu: pvu,
-                    emballage: emballage,
-                    image: image,
-                    CategorieProduitId: CategorieId,
-                    GrossisteId: GrossisteId
-                }, {
-                    where: { id: id }
-                }).then(response => {
-                    res.send(response)
-                }).catch(error => {
-                    res.status(400).send(error)
-                })
-            }
+            var files = req.files
+            var image = []
+            files.forEach(file => {
+                image.push(file.originalname)
+            })
+            image = image.toString()
+
+
+            const { id, designation, description, pvu, emballage, quantite, CategorieId, GrossisteId } = req.body
+            Produit.update({
+                designation: designation,
+                description: description,
+                quantite: quantite,
+                pvu: pvu,
+                emballage: emballage,
+                image: image,
+                CategorieProduitId: CategorieId,
+                GrossisteId: GrossisteId
+            }, {
+                where: { id: id }
+            }).then(response => {
+                PrixProduit.create({
+                    prix: pvu,
+                    ProduitId: id
+                }).then((result) => {
+                    res.status(200).send(result)
+                }).catch((err) => {
+                    res.status(500).send({ "message": "Le prix n'est pas ajouté erreur :" + err })
+                });
+            }).catch(error => {
+                res.status(500).send({ "message": "Erreur de modification : " + error })
+            })
         }
+
     },
 
     //Liste des produits par grossiste et par categorie produit
@@ -171,6 +187,8 @@ module.exports = {
                 model: Grossiste
             }, {
                 model: CategorieProduit
+            }, {
+                model: PrixProduit
             }]
         }).then((produits) => {
             res.send(produits)
@@ -183,16 +201,16 @@ module.exports = {
 
     //Supprimer un produit
     delete(req, res) {
-        let { id } = req.query
+        let { id } = req.body
         Produit.destroy({
                 where: {
                     id: id
                 }
             })
             .then(Produits => {
-                res.status(400).send({ message: "Suppression effectué avec succè:" })
+                res.status(200).send({ message: "Suppression effectué avec succè:" })
             }).catch(error => {
-                res.status(400).send({ message: "Suppression non effectué!" })
+                res.status(500).send({ message: "Suppression non effectué!" })
 
             })
     },
@@ -215,10 +233,10 @@ module.exports = {
             }).then((grossiste) => {
                 res.send(grossiste)
             }).catch((error) => {
-                res.status(404).send(error)
+                res.status(500).send(error)
             });
         } catch (error) {
-            res.status(404).send({ message: "Non autorisé" })
+            res.status(500).send({ message: "Non autorisé" })
         }
 
     },

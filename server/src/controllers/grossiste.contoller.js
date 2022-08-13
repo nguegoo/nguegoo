@@ -26,7 +26,7 @@ module.exports = {
         }).then(result => {
             res.send(result)
         }).catch(error => {
-            res.status(404).send(error)
+            res.status(500).send(error)
         })
 
     },
@@ -43,7 +43,7 @@ module.exports = {
                 }).then(result => {
                     res.send(result)
                 }).catch(error => {
-                    res.status(404).send(error)
+                    res.status(500).send(error)
                 })
             }).catch((err) => {
                 res.send(err)
@@ -96,7 +96,7 @@ module.exports = {
             .then(result => {
                 res.send(result)
             }).catch(err => {
-                res.status(404).send(err)
+                res.status(500).send(err)
             })
     },
     delete(req, res) {
@@ -108,7 +108,7 @@ module.exports = {
         }).then(result => {
             res.send(result)
         }).catch(err => {
-            res.status(404).send(err)
+            res.status(500).send(err)
         })
 
     },

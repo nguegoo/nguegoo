@@ -13,7 +13,7 @@ module.exports = {
             res.send(response)
         }).catch(error => {
             console.log(error)
-            res.status(404).send(error)
+            res.status(500).send(error)
         })
     },
 
@@ -45,7 +45,7 @@ module.exports = {
             }).then(response => {
                 req.send({ message: "Modification effecué avec succès" })
             }).catch(error => {
-                res.status(404).send({ message: "La modification a échoué : " + error })
+                res.status(500).send({ message: "La modification a échoué : " + error })
             })
         }
     },
@@ -124,7 +124,7 @@ module.exports = {
             res.status(200).send({ "message": "Suppression effecué avec succès" })
         }).catch(error => {
 
-            res.status(404).send({ message: "Erreur de supppression! " } + error)
+            res.status(500).send({ message: "Erreur de supppression! " } + error)
         })
     }
 

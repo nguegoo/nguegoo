@@ -10,7 +10,7 @@ module.exports = {
         }).then((livraison) => {
             res.status(200).send(livraison)
         }).catch((err) => {
-            res.status(404).send(erro)
+            res.status(500).send(erro)
         });
     },
 
@@ -38,7 +38,7 @@ module.exports = {
         }).then((livraison) => {
             res.status(200).send({ message: "Modification éffectué avec succès!" })
         }).catch((err) => {
-            res.status(404).send({ message: "La Modification a échoué " })
+            res.status(500).send({ message: "La Modification a échoué " })
         });
     },
 
