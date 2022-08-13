@@ -11,7 +11,7 @@
          <v-card-subtitle>Efficacité</v-card-subtitle>
          <v-card-subtitle>Performance</v-card-subtitle>
       </v-system-bar>
-      <banner class="mb-7"/>
+      <banner />
       <fonctionality />
       <Footer />
   </v-main>

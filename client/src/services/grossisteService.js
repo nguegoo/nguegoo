@@ -56,5 +56,12 @@ export default {
                 secteurId: secteurId
             }
         })
+    },
+    commandeParGrossiste(token) {
+        return Api().get('/panier/liste',  {
+            headers: {
+                authorization: token
+            }
+        })
     }
 }

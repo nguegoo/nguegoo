@@ -43,7 +43,7 @@ export default {
     },
     // update
     update (data) {
-        return Api().post('/produit/modify', data, {
+        return Api().put('/produit/update', data, {
             headers: {
                 'Content-Type': 'multipart/form-data'
             }
@@ -52,7 +52,7 @@ export default {
 
     // Delete
     deleteProduct (id) {
-        return Api().post('/produit/deleteProduct', id)
+        return Api().post('/produit/delete', id)
     },
     // list with limit and category
     listWithLimitAndCategory (limit, categoryId) {

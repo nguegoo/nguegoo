@@ -1,13 +1,11 @@
 <template>
-    <global>
-    <br><br>
-      <v-row class="mb-8">
-        <v-col cols="12" md="9" lg="10" offeset="0" offset-md="3" offset-lg="2">
+<div>
+    <global :selectedItem="2">
           <v-card bordred>
             <v-toolbar>
               <v-card-title>Liste des ventes</v-card-title>
             </v-toolbar>
-            <v-card style="margin-top:-1%;">
+            <v-card>
               <v-card-title>
                 <v-icon class="mdi-28px grey--text">mdi-stack-exchange</v-icon>
                 <v-divider vertical class="ml-2"></v-divider>
@@ -74,9 +72,8 @@
               </v-data-table>
             </v-card>
           </v-card>
-        </v-col>
-      </v-row>
     </global>
+    </div>
 </template>
 
 <script>

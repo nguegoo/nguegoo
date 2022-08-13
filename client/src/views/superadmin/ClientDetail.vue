@@ -9,10 +9,10 @@
           <v-row>
             <v-col cols="12">
               <v-avatar>
-                <v-img
+                <!-- <v-img
                   src="../../../public/images/person_1.jpg"
                 >
-                </v-img>
+                </v-img> -->
               </v-avatar>
             </v-col>
             <v-col cols="12" md="6">

@@ -8,9 +8,8 @@ export default {
       value: 'designation'
     },
     { text: 'Categorie', value: 'CategorieProduit.designation' },
-    { text: 'Prix', value: 'pvu' },
+    { text: 'Prix', value: 'PrixProduits[0].prix' },
     { text: 'Quantité', value: 'quantite' },
-    { text: 'Image', value: 'image' },
     { text: 'Actions', value: 'actions' }
   ]
 }

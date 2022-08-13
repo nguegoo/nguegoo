@@ -1,6 +1,6 @@
 <template>
   <div>
-    <v-main class="indigo">
+    <v-main class="amin-bg-color ">
        <v-row>
         <v-col cols="12" md="4">
           <v-card-title class="white--text">Contacts</v-card-title>
@@ -89,5 +89,12 @@ export default {
 </script>
 
 <style scoped>
-
+.amin-bg-color {
+    background: #4568DC;
+    /* fallback for old browsers */
+    background: -webkit-linear-gradient(to top, #B06AB3, #4568DC);
+    /* Chrome 10-25, Safari 5.1-6 */
+    background: linear-gradient(to top, #B06AB3, #4568DC);
+    /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */
+}
 </style>
