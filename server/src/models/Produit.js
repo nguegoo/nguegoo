@@ -19,10 +19,6 @@ Produit.init({
         type: Sequelize.INTEGER,
         defaultValue: 1
     },
-    pvu: {
-        type: Sequelize.INTEGER,
-        required: true
-    },
     image: {
         type: Sequelize.STRING
     },
@@ -42,7 +38,7 @@ Produit.init({
  * A un utilisateur, peuvent appartenir zéro ou plusieurs produits
  */
 Produit.belongsTo(Grossiste)
-Grossiste.hasMany(Produit)
+Grossiste.hasMany(Produit, { onDelete: 'CASCADE', onUpdate: 'CASCADE' })
 
 Produit.belongsTo(CategorieProduit)
 CategorieProduit.hasMany(Produit)

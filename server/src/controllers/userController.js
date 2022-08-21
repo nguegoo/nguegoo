@@ -24,10 +24,10 @@ module.exports = {
                         token: jwt.generateAccessToken(result.dataValues)
                     })
                 }).catch(error => {
-                    res.status(404).send(error)
+                    res.status(500).send(error)
                 })
             }).catch(error => {
-                res.status(404).send(error)
+                res.status(500).send(error)
             })
 
     },
@@ -74,7 +74,7 @@ module.exports = {
         }).then((result) => {
             res.send(result)
         }).catch((error) => {
-            res.status(404).send(error)
+            res.status(500).send(error)
         });
     },
 
@@ -89,7 +89,7 @@ module.exports = {
         }).then((result) => {
             res.send(result)
         }).catch((error) => {
-            res.status(404).send(error)
+            res.status(500).send(error)
         });
     },
     //Ajouter une vaforie
@@ -102,7 +102,7 @@ module.exports = {
         }).then((favories) => {
             res.send(favories)
         }).catch((error) => {
-            res.status(404).send(error)
+            res.status(500).send(error)
         });
     }
 }

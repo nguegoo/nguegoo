@@ -29,7 +29,7 @@ Router.get(
 Router.put('/update', upload.array('files', 4), produitController.update)
 
 //delete
-Router.delete('/delete', upload.none(), produitController.delete)
+Router.post('/delete', upload.none(), produitController.delete)
 
 Router.get('/mes-produits', produitController.grossisteByProduit)
 module.exports = Router
