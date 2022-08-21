@@ -20,7 +20,11 @@ export default {
 
     // delete product on then cart
     deleteCartProduct (id) {
-        return Api().post('/panier/deleteProductOnTheCart', { id: id })
+        return Api().delete('/panier/delete', {
+            params: {
+                id: id
+            }
+        })
     },
     getCommandLigne(userId, token, statut) {
         return Api().get('/panier/client-ligne-commande', {
@@ -33,7 +37,12 @@ export default {
             }
         })
     },
+
     validerCommande(commandes) {
         return Api().put('/panier/valider', {commandes})
+    },
+    // soumission de la commande(sans payement)
+    soumission_commande(data) {
+        return Api().post('/panier/valider-client', data)
     }
 }

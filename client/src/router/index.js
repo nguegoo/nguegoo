@@ -31,6 +31,7 @@ const routes = [
   // User
   user.registration,
   user.login,
+  user.pannier,
 
   // Admin
   admin.dashboard,

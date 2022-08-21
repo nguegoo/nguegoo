@@ -13,7 +13,7 @@
                             {{ produit.designation }}
                         </v-card-subtitle>
                         <v-card-text class="text--primary">
-                            <div><strong>Prix</strong>: <span>{{produit.PrixProduits[0].prix}} GNF</span></div>
+                            <div><strong>Prix</strong>: <span>{{produit.PrixProduits[produit.PrixProduits.length - 1].prix}} GNF</span></div>
                         </v-card-text>
                         <v-card-actions>
                             <v-btn color="orange" text @click="commander(produit)">
@@ -151,6 +151,7 @@ export default {
                 designation: '',
                 quantite: 0,
                 prix: 0,
+                prixId: null,
                 pt: 0
             }
         };
@@ -199,18 +200,21 @@ export default {
                 });
         },
         commander(produit) {
+            console.log(produit)
             this.commande.produitId = produit.id
             this.commande.designation = produit.designation
             this.commande.quantite = produit.quantite
-            this.commande.prix = produit.PrixProduits[0].prix
+            this.commande.prix = produit.PrixProduits[produit.PrixProduits.length - 1].prix
             this.commande.pt = this.quantite * this.commande.prix
+            this.commande.prixId = produit.PrixProduits[produit.PrixProduits.length - 1].id
             this.dialog = true
         },
         validerCommande() {
             const token = localStorage.getItem('token')
             pannierService.addPanier(token, {
                 ProduitId: this.commande.produitId,
-                quantite: this.quantite
+                quantite: this.quantite,
+                prixId: this.commande.prixId
             }).then((result) => {
                 this.simpleDialog = true
                 this.simpleDialogMessage = "Commande effectuée avec succès !"

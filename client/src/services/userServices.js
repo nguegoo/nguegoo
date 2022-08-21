@@ -10,5 +10,16 @@ export default {
     },
     updateUserInfo(data) {
         return Api().put('/user/update', data)
+    },
+    // gestion de commande
+    listeCommande(token, grossiste) {
+        return Api().get('/panier/commande-dun-client',{
+            params: {
+                grossisteId: grossiste
+            },
+            headers: {
+                authorization: token
+            }
+        })
     }
 }
