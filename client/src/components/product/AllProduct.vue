@@ -58,7 +58,7 @@
                             </div>
                             <v-card-actions>
                                 <v-btn icon @click="addFavori(f.id)">
-                                    <v-icon>mdi-heart</v-icon>
+                                    <v-icon>mdi-heart-outline</v-icon>
                                 </v-btn>&nbsp;
 
                                 <v-btn icon>
@@ -273,8 +273,8 @@ export default {
                         this.dialog = true
                         console.log(result)
                     }).catch((err) => {
-                        this.alertMessage = err.response.data.message
-                        console.log(this.alertMessage)
+                        console.log(err)
+                        this.alertMessage = "Erreur d'ajout"
                         this.dialog = true
 
                     });

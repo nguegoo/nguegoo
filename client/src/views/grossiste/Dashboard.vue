@@ -66,7 +66,7 @@ import Global from "@/components/admin/Global";
 
 export default {
     created() {
-        /*const token = localStorage.getItem('token')
+        const token = localStorage.getItem('token')
         console.log(token)
         if(token == null) {
           this.$router.push({ path: '/grossiste/authentication' })
@@ -74,7 +74,7 @@ export default {
           this.$store.dispatch('setToken', localStorage.getItem('token'))
           this.$store.dispatch('setUser', JSON.parse(localStorage.getItem('user')))
           this.user = JSON.parse(localStorage.getItem('user'))
-        }*/
+        }
     },
     data() {
         return {

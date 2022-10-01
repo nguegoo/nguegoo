@@ -61,7 +61,9 @@ const routes = [
   
   // Partner admin
   partneradmin.partnerAdminHome,
-  partneradmin.livraisonDetail
+  partneradmin.livraisonDetail,
+  // client routes
+  grossiste.client
 
 ]
 const router = new VueRouter({

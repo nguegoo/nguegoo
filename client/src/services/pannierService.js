@@ -38,11 +38,19 @@ export default {
         })
     },
 
-    validerCommande(commandes) {
-        return Api().put('/panier/valider', {commandes})
+    validerCommande(commandes, token) {
+        return Api().put('/panier/valider', {commandes}, {
+            headers: {
+                authorization: token
+            }
+        })
     },
     // soumission de la commande(sans payement)
-    soumission_commande(data) {
-        return Api().post('/panier/valider-client', data)
+    soumission_commande(data, token) {
+        return Api().post('/panier/valider-client', data, {
+            headers: {
+                authorization: token
+            }
+        })
     }
 }

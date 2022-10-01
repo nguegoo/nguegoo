@@ -62,6 +62,15 @@
                         <v-list-item-title class="white--text">Ventes</v-list-item-title>
                     </v-list-item-content>
                 </v-list-item>
+                <v-list-item @click="navigateTo('/grossiste/client')" class="white--text">
+                    <v-list-item-icon>
+                        <v-icon class="white--text">mdi-account-group</v-icon>
+                    </v-list-item-icon>
+
+                    <v-list-item-content>
+                        <v-list-item-title class="white--text">Clients</v-list-item-title>
+                    </v-list-item-content>
+                </v-list-item>
                 <v-row justify="center">
                     <v-dialog v-model="dialog" fullscreen hide-overlay transition="dialog-bottom-transition">
                         <!-- contenu de la boîte à messagerie -->

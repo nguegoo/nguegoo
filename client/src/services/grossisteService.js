@@ -63,5 +63,19 @@ export default {
                 authorization: token
             }
         })
+    },
+    listeClients(token) {
+        return Api().get('/grossiste/client-grossiste', {
+            headers: {
+                authorization: token
+            }
+        })
+    },
+    ajout_commande(data, token) {
+        return Api().post('/panier/commande-local', data, {
+            headers: {
+                authorization: token
+            }
+        })
     }
 }

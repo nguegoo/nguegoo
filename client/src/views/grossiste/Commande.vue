@@ -228,10 +228,11 @@ export default {
       this.dialog = true 
       this.client = item.User.nom
       console.log(item)
-      if(item.statut == "ec") {
+      if(item.statut !== "T") {
+
         this.cmdEstValide = true
         this.cmdMessage = "Validation de la commande"
-      }else {
+      }else  {
         this.cmdEstValide = false
         this.cmdMessage = "Commande déjà validée !"
       }
@@ -241,8 +242,8 @@ export default {
         console.log(this.lignesCommande)
         for(let i = 0; i < this.lignesCommande.length; i++) {
           this.lignesCommande[i]['montant'] = 
-          this.lignesCommande[i].quantite * this.lignesCommande[i].Produit.pvu
-          this.montantTotal += this.lignesCommande[i].quantite * this.lignesCommande[i].Produit.pvu
+          this.lignesCommande[i].quantite * this.lignesCommande[i].PrixProduit.prix
+          this.montantTotal += this.lignesCommande[i].quantite * this.lignesCommande[i].PrixProduit.prix
           this.lignes.push(this.lignesCommande[i].id)
           this.detailsCommande.push({
             produitId: this.lignesCommande[i].Produit.id,
@@ -258,7 +259,7 @@ export default {
       pannierService.validerCommande({
         lignes: this.lignes,
         details: this.detailsCommande
-      })
+      }, this.token)
       .then((res) => {
         this.simpleDialog = true
         this.cmdEstValide = false
@@ -325,7 +326,7 @@ export default {
         { text: 'ID', value: 'id'},
         {text: 'Designation', value: 'Produit.designation'},
         {text: 'Quantite', value: 'quantite'},
-        {text: 'Prix unitaire', value: 'Produit.pvu'},
+        {text: 'Prix unitaire', value: 'PrixProduit.prix'},
         {text: 'Montant total', value: 'montant'}
       ],
      commandes: [],

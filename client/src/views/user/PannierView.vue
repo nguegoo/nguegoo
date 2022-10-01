@@ -225,7 +225,8 @@ export default {
       this.products.forEach(cmd => {
         cmds.push({ id: cmd.id, quantite: cmd.quantite })
       });
-      pannierService.soumission_commande({ commandes: cmds })
+      const token = localStorage.getItem('token')
+      pannierService.soumission_commande({ commandes: cmds }, token)
       .then((res) => {
         console.log(res)
         this.initialize()

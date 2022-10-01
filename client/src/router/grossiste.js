@@ -46,5 +46,13 @@ export default {
     path: '/grossiste/authentication',
     name: 'Authentication',
     component: Authentication
+  },
+  /**
+   * Clients d'un grossiste
+   */
+  client: {
+    path: '/grossiste/client',
+    name: 'ClientView',
+    component: () => import('@/views/grossiste/ClientView')
   }
 }
